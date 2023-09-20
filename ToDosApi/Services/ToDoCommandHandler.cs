@@ -5,13 +5,10 @@ using ToDosApi.Persistence;
 
 namespace ToDosApi.Services;
 
-public interface IToDoCommandHandler : ICommandHandler<CreateToDo>, 
-                                       ICommandHandler<RemoveToDo>, 
-                                       ICommandHandler<CompleteToDo>,
-                                       ICommandHandler<UpdateToDo>
-{ }
-
-public class ToDoCommandHandler : IToDoCommandHandler
+public class ToDoCommandHandler : ICommandHandler<CreateToDo>, 
+                                ICommandHandler<RemoveToDo>, 
+                                ICommandHandler<CompleteToDo>,
+                                ICommandHandler<UpdateToDo>
 {
     private readonly ToDoContext _toDoContext;
 
@@ -23,7 +20,7 @@ public class ToDoCommandHandler : IToDoCommandHandler
     public async Task HandleAsync(CreateToDo command)
     {
         var todo = new ToDo() { Task = command.Task, CreatedDateTime = command.CreatedTime };
-        _toDoContext.ToDos?.AddAsync(todo); 
+        _toDoContext.ToDos?.Add(todo); 
         await _toDoContext.SaveChangesAsync();
     }
 
