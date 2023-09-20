@@ -1,4 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using ToDosApi.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Set up configuration sources.
+
+var appSettings = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+var connectionString = appSettings.Build().GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<ToDoContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // Add services to the container.
 
@@ -14,6 +28,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+//Create database if not exists
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ToDoContext>();
+    context.Database.EnsureCreated();
 }
 
 app.UseHttpsRedirection();
