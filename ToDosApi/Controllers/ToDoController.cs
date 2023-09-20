@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using ToDosApi.Commands;
 using ToDosApi.Exceptions;
 using ToDosApi.Services;
@@ -8,7 +10,7 @@ namespace ToDosApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ToDoController : ControllerBase
+public class ToDoController : ODataController
 {
     private readonly ToDoCommandHandler _toDoCommandHandler;
     private readonly IToDoQueryHandler _toDoQueryHandler;
@@ -74,8 +76,9 @@ public class ToDoController : ControllerBase
     public Task<IActionResult> GetToDos() => 
         Task.FromResult<IActionResult>(Ok(_toDoQueryHandler.All()));
     
-    [HttpGet("/{id:int}")]
-    public async Task<IActionResult> GetToDos(int id)
+    [EnableQuery]
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetToDos([FromRoute] int id)
     {
         try
         {
@@ -96,7 +99,7 @@ public class ToDoController : ControllerBase
     [Route("/NotCompleted")]
     public Task<IActionResult> GetToDosFilterByIsNotComplete() => 
         Task.FromResult<IActionResult>(Ok(_toDoQueryHandler.FilterByIsNotComplete()));
-    
+        
     [HttpGet]
     [Route("/Task")]
     public Task<IActionResult> GetToDosFilterByTask([Required] string name) => 

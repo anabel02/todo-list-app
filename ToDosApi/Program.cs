@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.ModelBuilder;
+using ToDosApi.Models;
 using ToDosApi.Persistence;
 using ToDosApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Set up configuration sources.
 
+// Set up configuration sources.
 var appSettings = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
@@ -14,6 +17,16 @@ var connectionString = appSettings.Build().GetConnectionString("DefaultConnectio
 
 builder.Services.AddDbContext<ToDoContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+
+
+var modelBuilder = new ODataConventionModelBuilder();
+modelBuilder.EntitySet<ToDo>("Todos");
+
+builder.Services.AddControllers().AddOData(
+    options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null).AddRouteComponents(
+        "odata",
+        modelBuilder.GetEdmModel()));
 
 // Add services to the container.
 
@@ -35,17 +48,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//Create database if not exists
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ToDoContext>();
-    context.Database.EnsureCreated();
-}
+// //Create database if not exists
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//     var context = services.GetRequiredService<ToDoContext>();
+//     context.Database.EnsureCreated();
+// }
 
-app.UseHttpsRedirection();
+app.UseRouting();
 
-app.UseAuthorization();
+app.UseEndpoints(endpoints => endpoints.MapControllers());
 
 app.MapControllers();
 
