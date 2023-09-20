@@ -18,7 +18,8 @@ builder.Services.AddDbContext<ToDoContext>(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IToDoCommandHandler, ToDoCommandHandler>();
+builder.Services.AddScoped<ToDoCommandHandler>();
+builder.Services.AddScoped<IToDoQueryHandler, ToDoQueryHandler>();
 builder.Services.AddEndpointsApiExplorer();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

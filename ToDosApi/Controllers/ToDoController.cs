@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using ToDosApi.Commands;
 using ToDosApi.Exceptions;
 using ToDosApi.Services;
@@ -9,11 +10,13 @@ namespace ToDosApi.Controllers;
 [Route("[controller]")]
 public class ToDoController : ControllerBase
 {
-    private readonly IToDoCommandHandler _toDoCommandHandler;
+    private readonly ToDoCommandHandler _toDoCommandHandler;
+    private readonly IToDoQueryHandler _toDoQueryHandler;
 
-    public ToDoController(IToDoCommandHandler toDoCommandHandler)
+    public ToDoController(ToDoCommandHandler toDoCommandHandler, IToDoQueryHandler toDoQueryHandler)
     {
         _toDoCommandHandler = toDoCommandHandler;
+        _toDoQueryHandler = toDoQueryHandler;
     }
     
     [HttpPost]
@@ -66,4 +69,36 @@ public class ToDoController : ControllerBase
         }
         return Ok();
     }
+
+    [HttpGet]
+    public Task<IActionResult> GetToDos() => 
+        Task.FromResult<IActionResult>(Ok(_toDoQueryHandler.All()));
+    
+    [HttpGet("/{id:int}")]
+    public async Task<IActionResult> GetToDos(int id)
+    {
+        try
+        {
+            return Ok(await _toDoQueryHandler.FindById(id));
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+    
+    [HttpGet]
+    [Route("/Completed")]
+    public Task<IActionResult> GetToDosFilterByIsComplete() => 
+        Task.FromResult<IActionResult>(Ok(_toDoQueryHandler.FilterByIsComplete()));
+    
+    [HttpGet]
+    [Route("/NotCompleted")]
+    public Task<IActionResult> GetToDosFilterByIsNotComplete() => 
+        Task.FromResult<IActionResult>(Ok(_toDoQueryHandler.FilterByIsNotComplete()));
+    
+    [HttpGet]
+    [Route("/Task")]
+    public Task<IActionResult> GetToDosFilterByTask([Required] string name) => 
+        Task.FromResult<IActionResult>(Ok(_toDoQueryHandler.FindByName(name)));
 }
