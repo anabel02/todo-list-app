@@ -25,13 +25,14 @@ namespace ToDosApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CompletedDateTime")
+                    b.Property<DateTime?>("CompletedDateTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("CreatedDateTime")
+                    b.Property<DateTime?>("CreatedDateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Task")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

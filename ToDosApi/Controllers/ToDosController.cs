@@ -15,9 +15,9 @@ public class ToDosController : ControllerBase
     }
 
     [EnableQuery]
-    public IQueryable<ToDo>? Get() => _context.ToDos;
+    public IQueryable<ToDo> Get() => _context.ToDos;
     
     [EnableQuery]
     public ActionResult<ToDo> Get([FromODataUri] int key) 
-        => _context.ToDos is not null ? Ok(_context.ToDos.Find(key)) : NotFound();
+        => Ok(_context.ToDos.Find(key));
 }
