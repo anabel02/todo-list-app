@@ -1,24 +1,14 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Box, Button, TextInput } from '@mantine/core';
+import { useFetch } from './helpers/fetch';
 
 function App() {
+  const x = useFetch(`http://localhost:5028/ToDo`, []);
+  console.log();
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
     </div>
   );
 }
