@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using ToDosApi.Commands;
 using ToDosApi.Exceptions;
+using ToDosApi.Models;
+using ToDosApi.Persistence;
 using ToDosApi.Services;
+using ODataController = Microsoft.AspNetCore.OData.Routing.Controllers.ODataController;
 
 namespace ToDosApi.Controllers;
 
@@ -14,11 +16,13 @@ public class ToDoController : ODataController
 {
     private readonly ToDoCommandHandler _toDoCommandHandler;
     private readonly IToDoQueryHandler _toDoQueryHandler;
+    private readonly ToDoContext _context;
 
-    public ToDoController(ToDoCommandHandler toDoCommandHandler, IToDoQueryHandler toDoQueryHandler)
+    public ToDoController(ToDoCommandHandler toDoCommandHandler, IToDoQueryHandler toDoQueryHandler, ToDoContext context)
     {
         _toDoCommandHandler = toDoCommandHandler;
         _toDoQueryHandler = toDoQueryHandler;
+        _context = context;
     }
     
     [HttpPost]
@@ -73,21 +77,14 @@ public class ToDoController : ODataController
     }
 
     [HttpGet]
-    public Task<IActionResult> GetToDos() => 
-        Task.FromResult<IActionResult>(Ok(_toDoQueryHandler.All()));
+    [Microsoft.AspNetCore.OData.Query.EnableQuery]
+    public IEnumerable<ToDo>? Get() => _context.ToDos;
     
-    [EnableQuery]
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetToDos([FromRoute] int id)
+    [HttpGet("{key:int}")]
+    [Microsoft.AspNetCore.OData.Query.EnableQuery]
+    public ActionResult<ToDo> Get([FromODataUri] int key)
     {
-        try
-        {
-            return Ok(await _toDoQueryHandler.FindById(id));
-        }
-        catch (NotFoundException e)
-        {
-            return NotFound(e.Message);
-        }
+        return (ActionResult<ToDo>)_context.ToDos.Find(key) ?? NotFound();
     }
     
     [HttpGet]

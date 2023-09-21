@@ -18,15 +18,12 @@ var connectionString = appSettings.Build().GetConnectionString("DefaultConnectio
 builder.Services.AddDbContext<ToDoContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-
-
 var modelBuilder = new ODataConventionModelBuilder();
-modelBuilder.EntitySet<ToDo>("Todos");
 
-builder.Services.AddControllers().AddOData(
-    options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null).AddRouteComponents(
-        "odata",
-        modelBuilder.GetEdmModel()));
+modelBuilder.EntitySet<ToDo>("ToDos");
+builder.Services.AddControllers().AddOData(opt =>
+    opt.Select().Count().Filter().Expand().Select().OrderBy().SetMaxTop(50)
+        .AddRouteComponents("", modelBuilder.GetEdmModel()));
 
 // Add services to the container.
 
