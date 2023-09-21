@@ -1,5 +1,6 @@
-interface Todo {
+export type Todo = {
     id: number;
     task: string;
-    done: bool
-}
+    createdDateTime: Date;
+    completedDateTime?: Date;
+};

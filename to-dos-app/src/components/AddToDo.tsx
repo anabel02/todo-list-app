@@ -12,7 +12,7 @@ export const AddToDo = (handleAdd: Function) => {
 
         return (
             <Box maw={340} mx="auto">
-              <form onSubmit={form.onSubmit((values) => handleAdd)}>
+              <form onSubmit={form.onSubmit((values) => handleAdd())}>
                 <TextInput
                   placeholder="New task"
                   {...form.getInputProps('task')}

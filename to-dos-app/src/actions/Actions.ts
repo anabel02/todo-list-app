@@ -1,3 +1,5 @@
+import { Todo } from "../types/todo";
+
     export const addAction = (todo: Todo): Action => ({
         type: ActionType.Add,
         payload: todo

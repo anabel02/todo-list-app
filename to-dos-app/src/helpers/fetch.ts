@@ -1,19 +1,26 @@
-export const useFetch = (
+const baseUrlQueries = "http://localhost:5028/ToDos";
+const baseUrlCommands = "http://localhost:5028/ToDo";
+
+enum HttpMethod {
+  POST = "POST",
+  PUT = "PUT",
+  PATCH = "PATCH",
+  DELETE = "DELETE"
+};
+
+export const queryFetch = (endpoint: string): Promise<Response> => fetch(`${baseUrlQueries}${endpoint}`);
+
+export const commandFetch = (
     endpoint: string,
     data: any,
-    method: string = "GET"
+    method: HttpMethod
   ): Promise<Response> => {
-    const url = endpoint;
-  
-    if (method === "GET") {
-      return fetch(url);
-    } else {
-      return fetch(url, {
+    const url = `${baseUrlCommands}/${endpoint}`;
+    return fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
-    }
   };
