@@ -1,6 +1,5 @@
 import { useFetch } from "../helpers/fetch";
 
-   
     export const handleAdd = (todo: Todo) => {
         return async () => {
             const request = { task: todo.task };

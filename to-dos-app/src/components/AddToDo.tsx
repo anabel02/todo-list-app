@@ -1,7 +1,7 @@
 import { TextInput, Button, Group, Box } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
-export const AddToDo = () => {
+export const AddToDo = (handleAdd: Function) => {
     const form = useForm({
         initialValues: {
           task: ''
@@ -12,9 +12,9 @@ export const AddToDo = () => {
 
         return (
             <Box maw={340} mx="auto">
-              <form onSubmit={form.onSubmit((values) => console.log(values))}>
+              <form onSubmit={form.onSubmit((values) => handleAdd)}>
                 <TextInput
-                  placeholder="Task ..."
+                  placeholder="New task"
                   {...form.getInputProps('task')}
                 />
         
