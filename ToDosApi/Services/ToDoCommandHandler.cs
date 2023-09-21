@@ -58,9 +58,10 @@ public class ToDoCommandHandler : ICommandHandler<CreateToDo>,
     public async Task HandleAsync(UpdateToDo command)
     {
         var todo = await _toDoContext.ToDos.SingleOrDefaultAsync(todo => todo.Id == command.Id);
-        if (todo != null)
+        if (todo is not null)
         {
-            todo.Task = command.Task;
+            if (todo.CompletedDateTime is not null) throw new BadRequestException("You can't update a completed task");
+            if (command.Task != null) todo.Task = command.Task;
         }
         else 
         {

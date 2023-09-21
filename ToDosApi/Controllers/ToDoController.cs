@@ -39,6 +39,25 @@ public class ToDoController : ControllerBase
         return Ok();
     }
     
+    [HttpPut]
+    [Route("/updateName")]
+    public async Task<ActionResult> CompleteToDoAsync(UpdateToDo command)
+    {
+        try
+        {
+            await _toDoCommandHandler.HandleAsync(command);
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (BadRequestException e)
+        {
+            return BadRequest(e.Message);
+        }
+        return Ok();
+    }
+    
     [HttpPatch]
     public async Task<ActionResult> Patch([FromRoute] int key, [FromBody] Delta<ToDo> delta)
     {
