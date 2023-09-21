@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using ToDosApi.Commands;
 using ToDosApi.Exceptions;
 using ToDosApi.Services;
@@ -10,7 +9,7 @@ namespace ToDosApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ToDoController : ODataController
+public class ToDoController : ControllerBase
 {
     private readonly ToDoCommandHandler _toDoCommandHandler;
     private readonly IToDoQueryHandler _toDoQueryHandler;
