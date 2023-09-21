@@ -1,20 +1,19 @@
-
     export const addAction = (todo: Todo): Action => ({
         type: ActionType.Add,
-        payload: { todo }
+        payload: todo
     });
     
-    export const removeTodo = (todo: Todo): Action => ({
+    export const deleteAction = (todo: Todo): Action => ({
         type: ActionType.Delete,
-        payload: { todo }
+        payload: todo
     });
     
-    export const updateTodo = (todo: Todo): Action => ({
+    export const updateAction = (todo: Todo): Action => ({
         type: ActionType.Update,
-        payload: { todo }
+        payload: todo
     });
     
-    export const setActiveTodos = (todos: Array<Todo>): Action => ({
+    export const toggleAction = (todo: Todo): Action => ({
         type: ActionType.Toggle,
-        payload: { todos }
+        payload: todo
     });

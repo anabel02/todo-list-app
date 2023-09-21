@@ -1,6 +1,6 @@
 export const useFetch = (
     endpoint: string,
-    data: object,
+    data: any,
     method: string = "GET"
   ): Promise<Response> => {
     const url = endpoint;

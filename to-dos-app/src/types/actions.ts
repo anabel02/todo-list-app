@@ -7,5 +7,5 @@ enum ActionType {
 
 interface Action {
     type: ActionType,
-    payload: any
+    payload: Todo
 }

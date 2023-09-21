@@ -1764,6 +1764,72 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@odata2ts/converter-api@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@odata2ts/converter-api/-/converter-api-0.1.2.tgz#43e4d873277978e583aae981279eb4e2c7614ef1"
+  integrity sha512-3KaXbzKiu6rOh8/kP7hv26e4PN2JQ/YZuobzkOvl4swfkxZjKOLcM221tNH/TVGm40SZFkLRV7pf1HenvvET2Q==
+  dependencies:
+    "@odata2ts/odata-core" "^0.1.0"
+
+"@odata2ts/http-client-api@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@odata2ts/http-client-api/-/http-client-api-0.1.0.tgz#aa0701e793d687ab2acd921f7c4983ff7ae058b2"
+  integrity sha512-mbIRS535/AldQ19fxj3rTXUGn3b8VltVKN4poIcwVBmqKUI/cY0aP9q/zDrGp8RBHNOEm/S+0qSQI8GEiAFS1A==
+
+"@odata2ts/http-client-api@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@odata2ts/http-client-api/-/http-client-api-0.5.1.tgz#fa9f95dcfa4fdf3b39f49308b16f7a2ecdd0a3b5"
+  integrity sha512-k5rzpeOuWbPvYj40Qy1ZmP2G3EFD6kqk7np5VpSmXL9ZTZtS3Vzi6+aJM1uO2W8/4RDpzlBzyrLc2hjLgSPw4g==
+
+"@odata2ts/http-client-base@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@odata2ts/http-client-base/-/http-client-base-0.4.2.tgz#4bc0fbda1afff28a3e864157394c4a222143066a"
+  integrity sha512-LqW9p6aa5PnAgNBYGG1VEf/sFTy+JC3fioI2/BP/1dW5ZpV1PBPOa35RyALcBtb+TgdfFfbuzJVUmI/FJsj8mQ==
+  dependencies:
+    "@odata2ts/http-client-api" "^0.5.1"
+
+"@odata2ts/http-client-fetch@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@odata2ts/http-client-fetch/-/http-client-fetch-0.6.2.tgz#7467c3745def6232180910fd17c95cc95419f507"
+  integrity sha512-8tzVfAHpJp7yVFrmRrYcUoCcoqZSwzbVyagasaZken7Axsxx7P6Qbe/pCv93zgAcLtu0pSsNQevXBOOuBVGuNw==
+  dependencies:
+    "@odata2ts/http-client-base" "^0.4.2"
+
+"@odata2ts/odata-core@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@odata2ts/odata-core/-/odata-core-0.1.0.tgz#a5c03efb85a3fb0557bcffe7c41a92fe91d148bd"
+  integrity sha512-kiLHbZu6ewBjfxpATL0NQXhFG+5XZlCBmmiEQMAF5elSMMrQIrf09wd7vurx0/4MnrLYkcPh/v6/CR5XaQE9Pw==
+
+"@odata2ts/odata-core@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@odata2ts/odata-core/-/odata-core-0.4.0.tgz#f0b38ee1810031be24853d64a0cf8e049d6dd615"
+  integrity sha512-wwwstMJwiiDkgCk3dEdZsWt6wVDhFcR2ynFy+RkD0e7tPPmeIHkmcTHwLv4UibiMVouyHlVOeTX+5vlftMv0vw==
+
+"@odata2ts/odata-query-builder@^0.16.4":
+  version "0.16.4"
+  resolved "https://registry.yarnpkg.com/@odata2ts/odata-query-builder/-/odata-query-builder-0.16.4.tgz#45f0eebb75f34f4e2e710f806f378867cfad2534"
+  integrity sha512-z3OT8jz14c3khUX/VZvU1kA5qvkzQfxvrB6/8zSW49ZpaH6kS08qMfweh8hEwMGhR1EiTIfU/pjBGzK/KiNMyQ==
+  dependencies:
+    "@odata2ts/odata-query-objects" "^0.20.0"
+
+"@odata2ts/odata-query-objects@^0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@odata2ts/odata-query-objects/-/odata-query-objects-0.20.0.tgz#8f97d9b1d972e192eb2893a39cbbeca1c0361c57"
+  integrity sha512-JbnnKcODwwyfkADNut9jX0O/b/Za8lKj4n7LlXHR+Gvo1AT6ijo/5v66rjApMJ7zJJ7y59AOYaTF6RNHEVf2nQ==
+  dependencies:
+    "@odata2ts/converter-api" "^0.1.2"
+    "@odata2ts/http-client-api" "^0.1.0"
+    "@odata2ts/odata-core" "^0.4.0"
+
+"@odata2ts/odata-service@^0.17.1":
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/@odata2ts/odata-service/-/odata-service-0.17.1.tgz#12fb48e1f658387da147662519ee0e26b84e8cd8"
+  integrity sha512-k94cZbJygB0rRoILL9DM/hNruvZ08T1jToWw/L2sjTS96S1VSK5iajvr24t5nxUwMy41nb0eG7/XkPbY71p7zA==
+  dependencies:
+    "@odata2ts/http-client-api" "^0.5.1"
+    "@odata2ts/odata-query-builder" "^0.16.4"
+    "@odata2ts/odata-query-objects" "^0.20.0"
+
 "@pmmmwh/react-refresh-webpack-plugin@^0.5.3":
   version "0.5.11"
   resolved "https://registry.yarnpkg.com/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.5.11.tgz#7c2268cedaa0644d677e8c4f377bc8fb304f714a"
