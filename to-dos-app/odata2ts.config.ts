@@ -6,7 +6,7 @@ const config: ConfigFileOptions = {
   services: {
     trippin: {
       source: "resource/trippin.xml",
-      output: "build/trippin",
+      output: "src/build/trippin",
     }
   }
 }
