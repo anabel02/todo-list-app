@@ -39,6 +39,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "gen-odata": "odata2ts",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -61,5 +62,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@odata2ts/odata2ts": "^0.29.1"
   }
 }
