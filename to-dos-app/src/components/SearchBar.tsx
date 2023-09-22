@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Input, Button, Container, Flex } from "@mantine/core";
+import { Input, Button, Flex, Box } from "@mantine/core";
 
-interface Propis{
+export interface Propis{
   callback: (arg:string | undefined) => void
 }
 
@@ -19,12 +19,11 @@ function SearchBar(props: Propis) {
   };
 
   return (
-    <>
-      <Container  mt={120}>
+      <Box maw={340} h={70} mx="auto">
         <Flex
           direction={{ base: "column", sm: "row" }}
           gap="sm"
-          align="center"
+          align="rigth"
         >
           <Input
             placeholder="Search"
@@ -32,11 +31,10 @@ function SearchBar(props: Propis) {
             onChange={handleSearchInputChange}
             radius="xl"
           />
+          <Button onClick={handleSearchClick} size="xs" radius="xl">Search</Button>
         </Flex>
-        <Button onClick={handleSearchClick} size="xs" radius="xl">Search</Button>
-      </Container>
-    </>
+    </Box>
   );
-};
+}
 
 export default SearchBar;

@@ -3,14 +3,13 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { MantineProvider,} from '@mantine/core';
 import '@mantine/core/styles.css';
-import Ap from './Ap';
 import { ToDoApp } from './components/ToDoApp';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render( 
-  <MantineProvider >
+  <MantineProvider>
     <ToDoApp />
   </MantineProvider>
 );

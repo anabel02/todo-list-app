@@ -17,8 +17,6 @@ function App() {
   
   return (
   <>
-    <ToDoList todos={ completedTodos }/>
-    <ToDoList todos={ notCompletedTodos }/>
   </>
   );
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useFetchToDos } from "../hooks/useFetch";
 import SearchBar from "./SearchBar";
 import { FilterToDo } from "./FilterToDo";
-import { Box, Container, Flex, ListItem, Modal } from "@mantine/core";
+import { Center, Container } from "@mantine/core";
 import { ToDoList } from "./ToDoList";
 import { AddToDo } from "./AddToDo";
 
@@ -25,10 +25,14 @@ export const ToDoApp = () => {
    
      return (
         <>
-            <SearchBar callback={a}/>
             <FilterToDo callback={b}/>
-            <ToDoList todos={todos}/>
-            <AddToDo callback={c}/>
+        <Center maw={1700} h={700}>
+            <Container>
+                <SearchBar callback={a}/>
+                <ToDoList todos={todos}/>
+                <AddToDo callback={c}/>
+            </Container>
+        </Center>
         </>
     );
 }
