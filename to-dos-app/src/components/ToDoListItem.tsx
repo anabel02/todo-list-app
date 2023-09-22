@@ -1,10 +1,10 @@
 import React from 'react'
-import { Todo } from '../types/todo'
-import { Box, Button, ListItem, ThemeIcon } from '@mantine/core';
+import { Box, Button, ListItem, Text, ThemeIcon } from '@mantine/core';
 import { IconCircleCheck, IconCircleDashed, IconPencil, IconTrash } from '@tabler/icons-react';
+import { ITodo } from '../types/type';
 
-export const ToDoListItem = ( todo : Todo) => {
-    const isComplete = (todo: Todo) : boolean => todo.completedDateTime === null;
+export const ToDoListItem : React.FC<{todo: ITodo}> = ({ todo }) => {
+    const isComplete = (todo: ITodo) : boolean => todo.completedDateTime === null;
 
     return (
         <ListItem icon={ 
@@ -17,9 +17,9 @@ export const ToDoListItem = ( todo : Todo) => {
             <IconCircleDashed size="1rem" />
         </ThemeIcon>
         }>
-            <p >
+            <Text>
                 { todo.task }
-            </p>
+            </Text>
 
             <Button variant="filled" rightSection={<IconTrash size={14} />} color="rgba(212, 61, 61, 1)" radius="lg">
                 Delete

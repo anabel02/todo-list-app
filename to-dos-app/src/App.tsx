@@ -1,7 +1,6 @@
 import './App.css';
-import { useFetchToDos } from './hooks/useFetch';
 import { ToDoList } from './components/ToDoList';
-import { Todo } from './types/todo';
+import { useFetchToDos } from './hooks/useFetch';
 
 const baseUrl = "http://localhost:5028/ToDos"
 // const httpClient = new FetchClient();
@@ -13,11 +12,13 @@ function App() {
   const completedFilter = `?$filter=not(CompletedDateTime eq null)`;
   const notCompletedFilter = `?$filter=(CompletedDateTime eq null)`;
 
-  const completedTodos : Todo[] = useFetchToDos(completedFilter);
-  const notCompletedTodos : Todo[] = useFetchToDos(notCompletedFilter);
-  console.log(completedTodos);
-  console.log(notCompletedTodos);
-  return (<>
+  const completedTodos = useFetchToDos(completedFilter);
+  const notCompletedTodos = useFetchToDos(notCompletedFilter);
+  
+  return (
+  <>
+    <ToDoList todos={ completedTodos }/>
+    <ToDoList todos={ notCompletedTodos }/>
   </>
   );
 }
