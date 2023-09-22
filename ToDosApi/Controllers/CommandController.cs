@@ -9,11 +9,11 @@ namespace ToDosApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ToDoController : ControllerBase
+public class CommandController : ControllerBase
 {
     private readonly ToDoCommandHandler _toDoCommandHandler;
 
-    public ToDoController(ToDoCommandHandler toDoCommandHandler)
+    public CommandController(ToDoCommandHandler toDoCommandHandler)
     {
         _toDoCommandHandler = toDoCommandHandler;
     }

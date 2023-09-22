@@ -1,5 +1,5 @@
 const baseUrlQueries = "http://localhost:5028/ToDos";
-const baseUrlCommands = "http://localhost:5028/ToDo";
+const baseUrlCommands = "http://localhost:5028/Command";
 
 export enum HttpMethod {
   POST = "POST",
