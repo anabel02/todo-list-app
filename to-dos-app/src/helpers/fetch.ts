@@ -1,7 +1,7 @@
 const baseUrlQueries = "http://localhost:5028/ToDos";
 const baseUrlCommands = "http://localhost:5028/ToDo";
 
-enum HttpMethod {
+export enum HttpMethod {
   POST = "POST",
   PUT = "PUT",
   PATCH = "PATCH",

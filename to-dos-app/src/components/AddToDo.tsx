@@ -1,7 +1,8 @@
 import { TextInput, Button, Group, Box } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { Todo } from '../types/type';
 
-export const AddToDo = (handleAdd: Function) => {
+export const AddToDo : React.FC<{callback: (value: string) => void}>= ({ callback }) => {
     const form = useForm({
         initialValues: {
           task: ''
@@ -12,14 +13,14 @@ export const AddToDo = (handleAdd: Function) => {
 
         return (
             <Box maw={340} mx="auto">
-              <form onSubmit={form.onSubmit((values) => handleAdd())}>
+              <form onSubmit={form.onSubmit(({task}) => callback(task))}>
                 <TextInput
-                  placeholder="New task"
+                  placeholder="New To Do..."
                   {...form.getInputProps('task')}
                 />
         
                 <Group justify="flex-end" mt="md">
-                  <Button type="submit">Submit</Button>
+                  <Button type="submit">Add To Do</Button>
                 </Group>
               </form>
             </Box>

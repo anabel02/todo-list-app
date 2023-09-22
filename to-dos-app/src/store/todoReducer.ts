@@ -1,6 +1,7 @@
-import { Todo } from "../types/todo";
+import { Todo, TodoAction } from "../types/type";
+import { ActionType } from "./actions";
 
-export const todoReducer = (state: Todo[] = [], action : Action) => {
+export const todoReducer = (state: Todo[] = [], action : TodoAction) => {
     switch (action.type) {
         case ActionType.Add:
             return [... state, action.payload];
@@ -20,9 +21,8 @@ export const todoReducer = (state: Todo[] = [], action : Action) => {
                 ...todo, 
                 task: action.payload.task
             } 
-            : todo);
-            
+            : todo);  
         default:
             return state;
-    }
-}
+    };
+};

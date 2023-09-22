@@ -18,6 +18,7 @@
     "@odata2ts/http-client-fetch": "^0.6.2",
     "@odata2ts/odata-query-builder": "^0.16.4",
     "@odata2ts/odata-service": "^0.17.1",
+    "@reduxjs/toolkit": "^1.9.5",
     "@tabler/icons-react": "^2.34.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -67,6 +68,9 @@
     ]
   },
   "devDependencies": {
-    "@odata2ts/odata2ts": "^0.29.1"
+    "@odata2ts/odata2ts": "^0.29.1",
+    "postcss": "^8.4.30",
+    "postcss-preset-mantine": "^1.7.0",
+    "postcss-simple-vars": "^7.0.1"
   }
 }

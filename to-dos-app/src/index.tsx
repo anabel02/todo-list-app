@@ -2,14 +2,16 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { MantineProvider,} from '@mantine/core';
-import App from './App';
+import '@mantine/core/styles.css';
+import Ap from './Ap';
+import { ToDoApp } from './components/ToDoApp';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render( 
   <MantineProvider >
-    <App />
+    <ToDoApp />
   </MantineProvider>
 );
 
