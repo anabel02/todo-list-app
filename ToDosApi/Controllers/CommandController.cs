@@ -17,35 +17,32 @@ public class CommandController : ControllerBase
     {
         _toDoCommandHandler = toDoCommandHandler;
     }
-    
+
     [HttpPost]
-    public async Task<ActionResult> CreateToDoAsync(CreateToDo command)
+    public async Task<ActionResult<int>> CreateToDoAsync(CreateToDo command)
     {
-        await _toDoCommandHandler.HandleAsync(command);
-        return Ok();
+        try
+        {
+            var id = await _toDoCommandHandler.Handle(command);
+            return Ok(id);
+        }
+        catch (BadRequestException e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (ServerErrorException e)
+        {
+            return StatusCode(500, e.Message);
+        }
     }
-    
+
     [HttpPut]
     public async Task<ActionResult> CompleteToDoAsync(CompleteToDo command)
     {
         try
         {
-            await _toDoCommandHandler.HandleAsync(command);
-        }
-        catch (NotFoundException e)
-        {
-            return NotFound(e.Message);
-        }
-        return Ok();
-    }
-    
-    [HttpPut]
-    [Route("/updateName")]
-    public async Task<ActionResult> CompleteToDoAsync(UpdateToDo command)
-    {
-        try
-        {
-            await _toDoCommandHandler.HandleAsync(command);
+            await _toDoCommandHandler.Handle(command);
+            return Ok();
         }
         catch (NotFoundException e)
         {
@@ -55,7 +52,25 @@ public class CommandController : ControllerBase
         {
             return BadRequest(e.Message);
         }
-        return Ok();
+    }
+    
+    [HttpPut]
+    [Route("/Edit")]
+    public async Task<ActionResult> CompleteToDoAsync(UpdateToDo command)
+    {
+        try
+        {
+            await _toDoCommandHandler.Handle(command);
+            return Ok();
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (BadRequestException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     [HttpPatch]
@@ -63,13 +78,13 @@ public class CommandController : ControllerBase
     {
         try
         {
-            await _toDoCommandHandler.HandleAsync(key, delta);
+            await _toDoCommandHandler.Handle(key, delta);
+            return Ok();
         }
         catch (NotFoundException e)
         {
             return NotFound(e.Message);
         }
-        return Ok();
     }
     
     [HttpDelete]
@@ -77,13 +92,12 @@ public class CommandController : ControllerBase
     {
         try
         {
-            await _toDoCommandHandler.HandleAsync(command);
+            await _toDoCommandHandler.Handle(command);
+            return Ok();
         }
         catch (NotFoundException e)
         {
             return NotFound(e.Message);
         }
-        
-        return Ok();
     }
 }

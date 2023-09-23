@@ -2,7 +2,7 @@
 
 namespace ToDosApi.Services;
 
-public interface ICommandHandler<in TCommand> where TCommand : ICommand
+public interface ICommandHandler<in TCommand, out T> where TCommand : ICommand
 {
-    Task HandleAsync(TCommand command);
+    T Handle(TCommand command);
 }
