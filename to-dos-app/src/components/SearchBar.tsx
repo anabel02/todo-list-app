@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Input, Button, Flex, Box } from "@mantine/core";
+import { Input, Flex, Box } from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
 
 function SearchBar({SearchState} : {SearchState: [string, React.Dispatch<React.SetStateAction<string>>]}) {
   const [searchQuery, setSearchQuery] = SearchState;
@@ -7,10 +7,6 @@ function SearchBar({SearchState} : {SearchState: [string, React.Dispatch<React.S
   const handleSearchInputChange = (event: any) => {
     setSearchQuery(event.target.value);
   };
-
-  const ResetInput = (e: any) =>{
-    setSearchQuery("");
-  }
 
   return (
       <Box maw={340} h={70} mx="auto">
@@ -24,8 +20,8 @@ function SearchBar({SearchState} : {SearchState: [string, React.Dispatch<React.S
             value={searchQuery}
             onChange={handleSearchInputChange}
             radius="xl"
+            rightSection={<IconSearch size={14} />}
           />
-          <Button size="xs" onClick={ResetInput} radius="xl">Reset</Button>
         </Flex>
     </Box>
   );
