@@ -1,66 +1,69 @@
-import { notifications } from "@mantine/notifications";
+import { modals } from "@mantine/modals";
 import { HttpMethod, commandFetch, getSortedCompletedTodos, getSortedNotCompletedTodos } from "../helpers/fetch";
 import { OdataResponse, Todo } from "../types/type";
 import { addAction, completeAction, editAction, removeAction, setActiveTodos, setTodos } from "./actions";
 import { AppDispatch, RootState } from "./store";
 
-    const openModal = (message: string) => {
-        modals.openContextModal({
-            modal: 'Error',
-            title: 'Test modal from context',
-            innerProps: {
-              modalBody: message}})
-    };
-
     export const addTodo = (task: string, createdDateTime: Date ) => {
         return async (dispatch: AppDispatch) => {
             try {
-                console.log(createdDateTime);
                 const resp = await commandFetch("", { task, createdDateTime }, HttpMethod.POST);
                 const body = await resp.json();
                 if (resp.ok) {
                     dispatch(addAction({Task: task, CreatedDateTime: createdDateTime, Id: body}));
                 } else {
-                    notifications.show({ message: 'Hello' });
+                    
                 }
             } catch {
-                notifications.show({ message: 'Hello' });
+                
             }
         };
     };
 
     export const removeTodo = (todo: Todo) => {
         return async (dispatch: AppDispatch) => {
-            const { Id } = todo;
-            const resp = await commandFetch("", { Id }, HttpMethod.DELETE);
-            if (resp.ok) {
-                dispatch(removeAction(todo));
-            } else {
-                 // mantine error   
+            try {
+                const { Id } = todo;
+                const resp = await commandFetch("", { Id }, HttpMethod.DELETE);
+                if (resp.ok) {
+                    dispatch(removeAction(todo));
+                } else {
+                    // mantine error   
+                }
+            } catch {
+
             }
         }
     };
         
     export const editTodo = (todo: Todo) => {
         return async (dispatch: AppDispatch) => {
-            const { Id, Task } = todo;
-            const resp = await commandFetch("/Edit", { Id, Task }, HttpMethod.PUT);
-            if (resp.ok) {
-                dispatch(editAction(todo));
-            } else {
-                // mantine error
+            try {
+                const { Id, Task } = todo;
+                const resp = await commandFetch("/Edit", { Id, Task }, HttpMethod.PUT);
+                if (resp.ok) {
+                    dispatch(editAction(todo));
+                } else {
+                    // mantine error
+                }
+            } catch {
+
             }
         }
     };
 
     export const completeTodo = (todo: Todo) => {
         return async (dispatch: AppDispatch) => {
+            try {
             const { Id } = todo;
-            const resp = await commandFetch("", { Id }, HttpMethod.PUT);
-            if (resp.ok) {
-                dispatch(completeAction(todo));
-            } else {
-                // mantine error
+                const resp = await commandFetch("", { Id }, HttpMethod.PUT);
+                if (resp.ok) {
+                    dispatch(completeAction(todo));
+                } else {
+                    // mantine error
+                }
+            } catch {
+
             }
         }
     };
@@ -81,7 +84,6 @@ import { AppDispatch, RootState } from "./store";
                 // mantine error
                 }
             } catch {
-                openModal("Fetch failed.");
             }
         }
     };

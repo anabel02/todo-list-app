@@ -7,6 +7,7 @@ import { ToDoApp } from './components/ToDoApp';
 import store from './store/store';
 import { Provider } from 'react-redux';
 import { Notifications } from '@mantine/notifications';
+import {ModalsProvider} from '@mantine/modals';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

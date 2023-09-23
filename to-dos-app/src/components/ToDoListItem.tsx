@@ -1,21 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Todo } from '../types/type';
 import { Button, Checkbox, Input, Table, Text, Tooltip } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { useAppDispatch } from '../store/store';
+import { completeTodo } from '../store/actionsCreator';
 
 export const ToDoListItem = ({ todo } : { todo: Todo }) => {
-    console.log(todo);
-    const {Task} = todo;
-    console.log(Task);
+  const dispatch = useAppDispatch();
+
+  const [checked, setChecked] = useState(false);
+
   return (
     <Table.Tr key={todo.Id}>
-
+    
     <Table.Td>
-      <Checkbox onChange={(event) => console.log} />
+    { 
+      (todo.CompletedDateTime !== null && <Checkbox disabled checked={ todo.CompletedDateTime !== null }
+        /> ) 
+      || <Checkbox onChange={(event) => {setChecked(event.currentTarget.checked)}} />
+    }
     </Table.Td>
 
     <Table.Td>
-      <Tooltip label={"completed \n created"}>
+      <Tooltip label={`Created at: ${todo.CreatedDateTime} ${todo.CompletedDateTime !== null ? 'Completed at: ' + todo.CreatedDateTime : ''}`}
+        multiline 
+        w={350} withArrow
+        transitionProps={{ duration: 300 }}
+        color="blue" 
+        position="top-start"
+        >
          <Text size='md' mt='sm'> { todo.Task } </Text>
       </Tooltip>
     </Table.Td>
