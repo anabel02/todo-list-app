@@ -19,7 +19,7 @@ public class CommandController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<int>> CreateToDoAsync(CreateToDo command)
+    public async Task<ActionResult<int>> CreateToDoAsync([FromBody] CreateToDo command)
     {
         try
         {
@@ -37,7 +37,7 @@ public class CommandController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult> CompleteToDoAsync(CompleteToDo command)
+    public async Task<ActionResult> CompleteToDoAsync([FromBody] CompleteToDo command)
     {
         try
         {
@@ -55,8 +55,8 @@ public class CommandController : ControllerBase
     }
     
     [HttpPut]
-    [Route("/Edit")]
-    public async Task<ActionResult> CompleteToDoAsync(UpdateToDo command)
+    [Route("Edit")]
+    public async Task<ActionResult> CompleteToDoAsync([FromBody] UpdateToDo command)
     {
         try
         {
@@ -88,7 +88,7 @@ public class CommandController : ControllerBase
     }
     
     [HttpDelete]
-    public async Task<ActionResult> RemoveToDoAsync(RemoveToDo command)
+    public async Task<ActionResult> RemoveToDoAsync([FromBody] RemoveToDo command)
     {
         try
         {
