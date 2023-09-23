@@ -1,17 +1,21 @@
 import { Button, Text } from "@mantine/core";
 import { modals } from "@mantine/modals"
 
-export const confirm = (handleConfirm: () => void, handleCancel: () => void, action: string) => modals.openConfirmModal({
-  title: `Please confirm your action: ${action} task`,
-  children: (
-    <Text size="sm">
-      This action is so important that you are required to confirm it. Please click one of these buttons to proceed.
-    </Text>
-  ),
-  labels: { confirm: 'Confirm', cancel: 'Cancel' },
-  onCancel: handleCancel,
-  onConfirm: handleConfirm,
-});
+export const confirm = (handleConfirm: () => void, handleCancel: () => void, action: string, color: string) => {
+  modals.openConfirmModal({
+    title: `${action} task`,
+    centered: true,
+    children: (
+      <Text size="sm">
+        Are you sure you want to {action.toLowerCase()} this task?
+      </Text>
+    ),
+    confirmProps: { color: color },
+    labels: { confirm: `${action} task`, cancel: `Don't ${action.toLowerCase()} task` },
+    onCancel: handleCancel,
+    onConfirm: handleConfirm,
+  });
+}
 
 export const validate = (value: string) => {
   if (value.trim().length > 0) {

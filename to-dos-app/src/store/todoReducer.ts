@@ -2,11 +2,11 @@ import { stat } from "fs";
 import { Todo, TodoAction, TodoState } from "../types/type";
 import { ActionType } from "./actions";
 
-const initialState : TodoState = {completedTodos: [], notCompletedTodos: [], activeTodos: []};
+const initialState: TodoState = { completedTodos: [], notCompletedTodos: [], activeTodos: [] };
 
-export const todoReducer = (state: TodoState = initialState, action : TodoAction) => {
+export const todoReducer = (state: TodoState = initialState, action: TodoAction) => {
     switch (action.type) {
-        case ActionType.Add :
+        case ActionType.Add:
             // when you add a new to do, it goes to the not completed todos
             return {
                 ...state,
@@ -22,12 +22,12 @@ export const todoReducer = (state: TodoState = initialState, action : TodoAction
 
         case ActionType.Complete:
             // when you mark a to do as completed, it is delete from not completed and add to completed
-            const todo : Todo | undefined = state.notCompletedTodos.find(todo => todo.Id === action.payload.todo!.Id);
+            const todo: Todo | undefined = state.notCompletedTodos.find(todo => todo.Id === action.payload.todo!.Id);
             if (todo === undefined) return state;
             return {
                 ...state,
                 notCompletedTodos: state.notCompletedTodos.filter(todo => todo.Id === action.payload.todo!.Id),
-                completedTodos: [{ ...todo,  completedDateTime: todo.CompletedDateTime}, ...state.completedTodos]
+                completedTodos: [{ ...todo, completedDateTime: todo.CompletedDateTime }, ...state.completedTodos]
             };
 
         case ActionType.Edit:
@@ -35,10 +35,10 @@ export const todoReducer = (state: TodoState = initialState, action : TodoAction
             return {
                 ...state,
                 notCompletedTodos: state.notCompletedTodos.map(todo => todo.Id === action.payload.todo!.Id ? {
-                    ...todo, 
+                    ...todo,
                     task: action.payload.todo!.Task
-                } 
-                : todo)
+                }
+                    : todo)
             };
 
         case ActionType.SetTodos:

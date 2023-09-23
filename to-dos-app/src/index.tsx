@@ -6,7 +6,6 @@ import '@mantine/core/styles.css';
 import { ToDoApp } from './components/ToDoApp';
 import store from './store/store';
 import { Provider } from 'react-redux';
-import { Notifications } from '@mantine/notifications';
 import {ModalsProvider} from '@mantine/modals';
 
 const root = ReactDOM.createRoot(
@@ -16,7 +15,6 @@ root.render(
   <Provider store = {store}>
     <MantineProvider>
       <ModalsProvider>
-        <Notifications />
         <ToDoApp />
       </ModalsProvider>
     </MantineProvider>

@@ -1,7 +1,7 @@
 import { TextInput, Button, Group, Box } from '@mantine/core';
 import { useState } from 'react';
 import { useAppDispatch } from '../store/store';
-import { addTodo } from '../store/actionsCreator';
+import { addTodo } from '../store/actionsHandlers';
 import { confirm, validate } from '../helpers/confirmation';
 
 export const AddToDo = () => {
@@ -22,7 +22,7 @@ export const AddToDo = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (validate(newTodo)) {
-      confirm(handleAddTodo, handleCancelAdd, "Add")
+      confirm(handleAddTodo, handleCancelAdd, "Add", "blue")
     }
   }
 

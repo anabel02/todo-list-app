@@ -3,7 +3,7 @@ import SearchBar from "./SearchBar";
 import { Center, Container, Text } from "@mantine/core";
 import { AddToDo } from "./AddToDo";
 import { RootState, useAppDispatch } from "../store/store";
-import { Filter, applyFilter, loadTodos } from "../store/actionsCreator";
+import { Filter, applyFilter, loadTodos } from "../store/actionsHandlers";
 import { useSelector } from "react-redux";
 import { ToDoFilters } from "./ToDoFilters";
 import { ToDoList } from "./ToDoList";
@@ -32,8 +32,9 @@ export const ToDoApp = () => {
     const [searchQuery, setSearchQuery] = useState("");
 
     return (
-        <> 
-            <SearchBar SearchState={[searchQuery, setSearchQuery]}/>
+        <>
+            <Text>Total to dos: {completedTodos.length + notCompletedTodos.length}</Text>
+            <SearchBar SearchState={[searchQuery, setSearchQuery]} />
             <ToDoFilters handleFilterChange={handleFilterChange} />
             <Center maw={1700} h={700}>
                 <Container>
@@ -41,7 +42,6 @@ export const ToDoApp = () => {
                     <AddToDo />
                 </Container>
             </Center>
-            <Text>Total to dos: {completedTodos.length + notCompletedTodos.length}</Text>
         </>
     );
 }

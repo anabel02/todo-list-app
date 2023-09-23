@@ -3,7 +3,7 @@ import { Todo } from '../types/type';
 import { Button, Checkbox, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useAppDispatch } from '../store/store';
-import { completeTodo, editTodo, removeTodo } from '../store/actionsCreator';
+import { completeTodo, editTodo, removeTodo } from '../store/actionsHandlers';
 import moment from 'moment';
 import { confirm, validate } from '../helpers/confirmation';
 
@@ -20,7 +20,7 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
 
   const handleConfirmComplete = (e: any) => {
     e.preventDefault();
-    confirm(handleCompleteTodo, () => {}, "Complete");
+    confirm(handleCompleteTodo, () => { }, "Complete", "blue");
   }
 
   const handleDeleteTodo = () => {
@@ -30,7 +30,7 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
 
   const handleConfirmDelete = (e: any) => {
     e.preventDefault();
-    confirm(handleDeleteTodo, () => {}, "Delete");
+    confirm(handleDeleteTodo, () => { }, "Delete", "red");
   }
 
   const [editedTodo, setEditedTodo] = useState("");
@@ -52,7 +52,7 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
   const handleConfirmEdit = (e: any) => {
     e.preventDefault();
     if (validate(editedTodo)) {
-      confirm(handleEditTodo, handleCancelEdit, "Edit")
+      confirm(handleEditTodo, handleCancelEdit, "Edit", "blue")
     }
   }
 
@@ -61,8 +61,8 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
 
       <Table.Td>
         {
-          (todo.CompletedDateTime !== null && <Checkbox disabled checked={todo.CompletedDateTime !== null}/>)
-          || <Checkbox checked={checked} onChange={handleConfirmComplete}/>
+          (todo.CompletedDateTime !== null && <Checkbox disabled checked={todo.CompletedDateTime !== null} />)
+          || <Checkbox checked={checked} onChange={handleConfirmComplete} />
         }
       </Table.Td>
 
