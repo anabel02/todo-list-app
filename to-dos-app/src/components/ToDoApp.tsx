@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
-import { Center, Container } from "@mantine/core";
+import { Center, Container, Text } from "@mantine/core";
 import { AddToDo } from "./AddToDo";
 import { RootState, useAppDispatch } from "../store/store";
 import { Filter, applyFilter, loadTodos } from "../store/actionsCreator";
@@ -16,6 +16,8 @@ export const ToDoApp = () => {
     }, [dispatch]);
 
     const activeTodos = useSelector((state: RootState) => state.activeTodos);
+    const completedTodos = useSelector((state: RootState) => state.completedTodos);
+    const notCompletedTodos = useSelector((state: RootState) => state.notCompletedTodos);
 
     const [filter, setFilter] = useState(Filter.All);
 
@@ -30,7 +32,7 @@ export const ToDoApp = () => {
     const [searchQuery, setSearchQuery] = useState("");
 
     return (
-        <>
+        <> 
             <SearchBar SearchState={[searchQuery, setSearchQuery]}/>
             <ToDoFilters handleFilterChange={handleFilterChange} />
             <Center maw={1700} h={700}>
@@ -39,6 +41,7 @@ export const ToDoApp = () => {
                     <AddToDo />
                 </Container>
             </Center>
+            <Text>Total to dos: {completedTodos.length + notCompletedTodos.length}</Text>
         </>
     );
 }
