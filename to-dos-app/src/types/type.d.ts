@@ -5,13 +5,20 @@
         completedDateTime?: Date;
     };
     
-    export type TodoState = {
-        articles: Todo[]
+    export type TodoState = { 
+        completedTodos: Todo[], 
+        notCompletedTodos: Todo[],
+        activeTodos: Todo[]
     };
     
     export type TodoAction = {
         type: ActionType,
-        payload: any
+        payload: { 
+            todo?: Todo; 
+            completedTodos?: Todo[];
+            notCompletedTodos?: Todo[];
+            activeTodos?: Todo[]
+        };
     };
   
     export type DispatchType = (args: TodoAction) => TodoAction

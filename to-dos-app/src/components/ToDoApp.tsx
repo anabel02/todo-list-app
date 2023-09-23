@@ -1,12 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFetchToDos } from "../hooks/useFetch";
 import SearchBar from "./SearchBar";
 import { FilterToDo } from "./FilterToDo";
 import { Center, Container } from "@mantine/core";
 import { ToDoList } from "./ToDoList";
 import { AddToDo } from "./AddToDo";
+import { Todo, TodoState } from "../types/type";
+import { RootState, useAppDispatch } from "../store/store";
+import { addTodo, loadTodos } from "../store/actionsCreator";
+import { useSelector } from "react-redux";
+
+
 
 export const ToDoApp = () => {
+    const dispatch = useAppDispatch();
+    
+    useEffect(() => {
+        dispatch(loadTodos());
+    }, [dispatch]);
+
+    const completedTodos = useSelector((state: RootState) => state.completedTodos);
+    const notCompletedTodos = useSelector((state: RootState) => state.notCompletedTodos);
+    const activeTodos = useSelector((state: RootState) => state.activeTodos);
+
+
+    const [state, setState] = useState([]);
     const todos = useFetchToDos(``);
 
     const [searchQuery, setSearchQuery] = useState("");
@@ -29,8 +47,9 @@ export const ToDoApp = () => {
         <Center maw={1700} h={700}>
             <Container>
                 <SearchBar callback={a}/>
+                {/* <ToDoList todos={todos}/> */}
                 <ToDoList todos={todos}/>
-                <AddToDo callback={c}/>
+                <AddToDo />
             </Container>
         </Center>
         </>

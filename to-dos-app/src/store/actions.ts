@@ -2,33 +2,39 @@ import { Todo, TodoAction } from "../types/type";
 
     export enum ActionType {
         Add,
-        Delete,
-        Toggle,
-        Update,
+        Remove,
+        Complete,
+        Edit,
+        SetActiveTodos,
         SetTodos
     };
 
     export const addAction = (todo: Todo): TodoAction => ({
         type: ActionType.Add,
-        payload: todo
+        payload: {todo}
     });
     
-    export const deleteAction = (todo: Todo): TodoAction => ({
-        type: ActionType.Delete,
-        payload: todo
+    export const removeAction = (todo: Todo): TodoAction => ({
+        type: ActionType.Remove,
+        payload: {todo}
     });
     
-    export const updateAction = (todo: Todo): TodoAction => ({
-        type: ActionType.Update,
-        payload: todo
+    export const editAction = (todo: Todo): TodoAction => ({
+        type: ActionType.Edit,
+        payload: {todo}
     });
     
-    export const toggleAction = (todo: Todo): TodoAction => ({
-        type: ActionType.Toggle,
-        payload: todo
+    export const completeAction = (todo: Todo): TodoAction => ({
+        type: ActionType.Complete,
+        payload: {todo}
     });
 
-    export const setAction = (todos: Todo[]): TodoAction => ({
-        type: ActionType.Toggle,
-        payload: todos
+    export const setTodos = (completedTodos: Todo[], notCompletedTodos: Todo[]): TodoAction => ({
+        type: ActionType.SetTodos,
+        payload: { completedTodos, notCompletedTodos },
+    });
+
+    export const setActiveTodos = (activeTodos: Todo[]): TodoAction => ({
+        type: ActionType.SetActiveTodos,
+        payload: { activeTodos },
     });
