@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useFetchToDos } from "../hooks/useFetch";
+import React, { FormEventHandler, useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
-import { FilterToDo } from "./FilterToDo";
 import { Center, Container } from "@mantine/core";
-import { ToDoList } from "./ToDoList";
 import { AddToDo } from "./AddToDo";
-import { Todo, TodoState } from "../types/type";
-import { RootState, useAppDispatch } from "../store/store";
-import { addTodo, loadTodos } from "../store/actionsCreator";
+import {  AppDispatch, RootState, useAppDispatch } from "../store/store";
+import { Filter, applyFilter, loadTodos } from "../store/actionsCreator";
 import { useSelector } from "react-redux";
-
-
+import { ToDoFilters } from "./ToDoFilters";
+import { ToDoList } from "./ToDoList";
 
 export const ToDoApp = () => {
     const dispatch = useAppDispatch();
@@ -23,32 +19,27 @@ export const ToDoApp = () => {
     const notCompletedTodos = useSelector((state: RootState) => state.notCompletedTodos);
     const activeTodos = useSelector((state: RootState) => state.activeTodos);
 
-
-    const [state, setState] = useState([]);
-    const todos = useFetchToDos(``);
-
     const [searchQuery, setSearchQuery] = useState("");
+    const [filter, setFilter] = useState(Filter.All);
 
-    const a = (args: string | undefined) =>{
-     setSearchQuery(args ?? "")
-    }
-
-    const b = (args: string | null) =>{
-        setSearchQuery(args ?? "")
-       }
-
-    const c = (args: string | null) =>{
-        setSearchQuery(args ?? "")
-    }
+    useEffect(() => {
+        dispatch(applyFilter(filter));
+      }, [dispatch, filter]);
    
+    const handleSearchClick = (e : FormEventHandler<HTMLButtonElement>) => {
+        console.log(e);
+      };
+    
+      const handleFilterChange = (value: Filter) => {
+        setFilter(value);
+      };
+
      return (
         <>
-            <FilterToDo callback={b}/>
+            <ToDoFilters handleFilterChange={handleFilterChange}/>
         <Center maw={1700} h={700}>
             <Container>
-                <SearchBar callback={a}/>
-                {/* <ToDoList todos={todos}/> */}
-                <ToDoList todos={todos}/>
+                <ToDoList todos={activeTodos}/>
                 <AddToDo />
             </Container>
         </Center>

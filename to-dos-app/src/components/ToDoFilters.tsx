@@ -1,28 +1,18 @@
-import { Flex } from '@mantine/core'
-import React, { useState } from 'react'
-import SearchBar, { Propis } from './SearchBar'
-import { FilterToDo } from './FilterToDo';
+import { Center, Flex, Select } from '@mantine/core';
+import React, { useState } from 'react';
+import SearchBar from './SearchBar';
+import { Filter } from '../store/actionsCreator';
 
-export const ToDoFilters = (props: Propis) => {
-
-    const [searchQuery, setSearchQuery] = useState("");
-
-    const a = (args: string | undefined) =>{
-        setSearchQuery(args ?? "")
-    }
-
-    const b = (args: string | null) =>{
-        setSearchQuery(args ?? "")
-       }
-
+export const ToDoFilters = ({handleFilterChange} : {handleFilterChange: (value: Filter) => void}) => {
     return (
         <Flex
         direction={{ base: "column", sm: "row" }}
         gap="sm"
         align="rigth"
     >
-        <SearchBar callback={a}/>
-        <FilterToDo callback={b}/>
+        <Center maw={1900} h={150}>
+            <Select data={["All", "Completed", "Not completed"]} defaultValue="All" onChange={handleFilterChange} />
+        </Center>
     </Flex>
     )
 }

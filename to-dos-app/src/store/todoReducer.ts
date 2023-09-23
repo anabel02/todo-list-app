@@ -16,27 +16,27 @@ export const todoReducer = (state: TodoState = initialState, action : TodoAction
         case ActionType.Remove:
             return {
                 ...state,
-                completedTodos: state.completedTodos.filter(todo => todo.id !== action.payload.todo!.id),
-                notCompletedTodos: state.notCompletedTodos.filter(todo => todo.id !== action.payload.todo!.id)
+                completedTodos: state.completedTodos.filter(todo => todo.Id !== action.payload.todo!.Id),
+                notCompletedTodos: state.notCompletedTodos.filter(todo => todo.Id !== action.payload.todo!.Id)
             };
 
         case ActionType.Complete:
             // when you mark a to do as completed, it is delete from not completed and add to completed
-            const todo : Todo | undefined = state.notCompletedTodos.find(todo => todo.id === action.payload.todo!.id);
+            const todo : Todo | undefined = state.notCompletedTodos.find(todo => todo.Id === action.payload.todo!.Id);
             if (todo === undefined) return state;
             return {
                 ...state,
-                notCompletedTodos: state.notCompletedTodos.filter(todo => todo.id === action.payload.todo!.id),
-                completedTodos: [{ ...todo,  completedDateTime: todo.completedDateTime}, ...state.completedTodos]
+                notCompletedTodos: state.notCompletedTodos.filter(todo => todo.Id === action.payload.todo!.Id),
+                completedTodos: [{ ...todo,  completedDateTime: todo.CompletedDateTime}, ...state.completedTodos]
             };
 
         case ActionType.Edit:
             // you only can update a not completed to do
             return {
                 ...state,
-                notCompletedTodos: state.notCompletedTodos.map(todo => todo.id === action.payload.todo!.id ? {
+                notCompletedTodos: state.notCompletedTodos.map(todo => todo.Id === action.payload.todo!.Id ? {
                     ...todo, 
-                    task: action.payload.todo!.task
+                    task: action.payload.todo!.Task
                 } 
                 : todo)
             };

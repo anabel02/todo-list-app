@@ -1,8 +1,8 @@
     export type Todo = {
-        id: number;
-        task: string;
-        createdDateTime: Date;
-        completedDateTime?: Date;
+        Id: number;
+        Task: string;
+        CreatedDateTime: Date;
+        CompletedDateTime?: Date;
     };
     
     export type TodoState = { 
@@ -20,5 +20,10 @@
             activeTodos?: Todo[]
         };
     };
+
+    export type OdataResponse = {
+        "@odata.context": string;
+        "value": Todo[];
+    }
   
     export type DispatchType = (args: TodoAction) => TodoAction

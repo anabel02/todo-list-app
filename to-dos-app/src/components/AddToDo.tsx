@@ -1,8 +1,8 @@
 import { TextInput, Button, Group, Box } from '@mantine/core';
-import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import { useAppDispatch } from '../store/store';
 import { addTodo } from '../store/actionsCreator';
+import { notifications } from '@mantine/notifications';
 
 export const AddToDo = () => {
   const dispatch = useAppDispatch();
@@ -11,9 +11,13 @@ export const AddToDo = () => {
 
   const handleAddTodo = () => {
     if (newTodo.trim().length == 0){
-      console.log(`Task text mustn't be empty`)
+      notifications.show({
+        color: 'red',
+        title: 'Invalid task',
+        message: `Task text mustn't be empty`});
       return;
     };
+
     dispatch(addTodo(newTodo, new Date()));
     setNewTodo("");
   };

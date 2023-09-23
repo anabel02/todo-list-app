@@ -11,8 +11,6 @@ export const queryFetch = (endpoint: string): Promise<Response> => fetch(`${base
 
 export const getSortedCompletedTodos : Promise<Response> = queryFetch(`?$filter=not(CompletedDateTime eq null)&&$orderby=(CompletedDateTime) desc`);
 
-//Filter movies that have the word Super in its title: http://host/service/Movies?$filter=contains(@word,Title)&@word='Super'
-
 export const getSortedNotCompletedTodos : Promise<Response> = queryFetch(`?$filter=(CompletedDateTime eq null)&&$orderby=(CreatedDateTime) asc`);
 
 export const commandFetch = (

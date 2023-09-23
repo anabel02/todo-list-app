@@ -1,21 +1,15 @@
-import { useState } from "react";
+import { FormEventHandler, useState } from "react";
 import { Input, Button, Flex, Box } from "@mantine/core";
 
 export interface Propis{
   callback: (arg:string | undefined) => void
 }
 
-function SearchBar(props: Propis) {
+function SearchBar({handleSearchClick} : {handleSearchClick: FormEventHandler<HTMLButtonElement>}) {
   const [searchQuery, setSearchQuery] = useState("");
-  const {callback} = props;
 
   const handleSearchInputChange = (event: any) => {
     setSearchQuery(event.target.value);
-  };
-
-  const handleSearchClick = (event: any) => {
-    event.preventDefault();
-    callback(event.target.value);
   };
 
   return (
@@ -31,7 +25,7 @@ function SearchBar(props: Propis) {
             onChange={handleSearchInputChange}
             radius="xl"
           />
-          <Button onClick={handleSearchClick} size="xs" radius="xl">Search</Button>
+          <Button onSubmit={handleSearchClick} size="xs" radius="xl">Search</Button>
         </Flex>
     </Box>
   );
