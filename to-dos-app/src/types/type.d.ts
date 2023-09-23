@@ -1,8 +1,8 @@
     export type Todo = {
         Id: number;
         Task: string;
-        CreatedDateTime: Date;
-        CompletedDateTime?: Date;
+        CreatedDateTime: number;
+        CompletedDateTime?: number;
     };
     
     export type TodoState = { 

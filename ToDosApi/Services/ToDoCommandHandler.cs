@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.Edm;
 using ToDosApi.Commands;
 using ToDosApi.Exceptions;
 using ToDosApi.Models;
@@ -7,9 +8,9 @@ using ToDosApi.Persistence;
 
 namespace ToDosApi.Services;
 
-public class ToDoCommandHandler : ICommandHandler<CreateToDo, Task<int>>, 
+public class ToDoCommandHandler : ICommandHandler<CreateToDo, Task<ToDo>>, 
                                 ICommandHandler<RemoveToDo, Task>, 
-                                ICommandHandler<CompleteToDo, Task>,
+                                ICommandHandler<CompleteToDo, Task<DateTime>>,
                                 ICommandHandler<UpdateToDo, Task>
 {
     private readonly ToDoContext _toDoContext;
@@ -20,7 +21,7 @@ public class ToDoCommandHandler : ICommandHandler<CreateToDo, Task<int>>,
         _toDoContext = toDoContext;
     }
 
-    public async Task<int> Handle(CreateToDo command)
+    public async Task<ToDo> Handle(CreateToDo command)
     {
         if (command.Task is null || command.Task.Trim().Length == 0) 
             throw new BadRequestException("Task mustn't be null or empty");
@@ -28,13 +29,13 @@ public class ToDoCommandHandler : ICommandHandler<CreateToDo, Task<int>>,
         var todo = _toDoContext.ToDos.Add(new ToDo()
         {
             Task = command.Task, 
-            CreatedDateTime = command.CreatedTime
+            CreatedDateTime = DateTime.Now
         });
         
         if (await _toDoContext.SaveChangesAsync() == 0)
             throw new ServerErrorException("Task didn't be created");
         
-        return todo.Entity.Id;
+        return todo.Entity;
     }
 
     public async Task Handle(RemoveToDo command)
@@ -52,12 +53,14 @@ public class ToDoCommandHandler : ICommandHandler<CreateToDo, Task<int>>,
         await _toDoContext.SaveChangesAsync();
     }
 
-    public async Task Handle(CompleteToDo command)
+    public async Task<DateTime> Handle(CompleteToDo command)
     {
+        var completedTime = DateTime.Now;
+        
         var todo = await _toDoContext.ToDos.SingleOrDefaultAsync(todo => todo.Id == command.Id);
         if (todo != null)
         {
-            todo.CompletedDateTime = command.CompletedTime;
+            todo.CompletedDateTime = completedTime;
         }
         else
         {
@@ -65,6 +68,8 @@ public class ToDoCommandHandler : ICommandHandler<CreateToDo, Task<int>>,
         }
         _toDoContext.Update(todo);
         await _toDoContext.SaveChangesAsync();
+
+        return completedTime;
     }
 
     public async Task Handle(UpdateToDo command)

@@ -4,13 +4,13 @@ import { OdataResponse, Todo } from "../types/type";
 import { addAction, completeAction, editAction, removeAction, setActiveTodos, setTodos } from "./actions";
 import { AppDispatch, RootState } from "./store";
 
-    export const addTodo = (task: string, createdDateTime: Date ) => {
+    export const addTodo = ( task: string ) => {
         return async (dispatch: AppDispatch) => {
             try {
-                const resp = await commandFetch("", { task, createdDateTime }, HttpMethod.POST);
+                const resp = await commandFetch("", { task }, HttpMethod.POST);
                 const body = await resp.json();
                 if (resp.ok) {
-                    dispatch(addAction({Task: task, CreatedDateTime: createdDateTime, Id: body}));
+                    dispatch(addAction(body));
                 } else {
                     
                 }
@@ -57,8 +57,9 @@ import { AppDispatch, RootState } from "./store";
             try {
             const { Id } = todo;
                 const resp = await commandFetch("", { Id }, HttpMethod.PUT);
+                const body = await resp.json();
                 if (resp.ok) {
-                    dispatch(completeAction(todo));
+                    dispatch(completeAction({...todo, CreatedDateTime:body}))
                 } else {
                     // mantine error
                 }
@@ -76,10 +77,10 @@ import { AppDispatch, RootState } from "./store";
 
                 const respNotCompleted = await getSortedNotCompletedTodos;
                 const bodyNotCompleted: OdataResponse = await respNotCompleted.json();
-
+                
                 if (respCompleted.ok && respNotCompleted.ok) {
                     dispatch(setTodos(bodyCompleted.value, bodyNotCompleted.value));
-                    dispatch(setActiveTodos(bodyCompleted.value.concat(bodyNotCompleted.value)));
+                    dispatch(applyFilter(Filter.All));
                 } else {
                 // mantine error
                 }
@@ -98,7 +99,7 @@ import { AppDispatch, RootState } from "./store";
         return (dispatch: AppDispatch, getState: () => RootState) => {
             switch (filter) {
                 case Filter.All:
-                    dispatch(setActiveTodos(getState().completedTodos.concat(getState().notCompletedTodos)));
+                    dispatch(setActiveTodos(getState().notCompletedTodos.concat(getState().completedTodos)));
                     return;
         
                 case Filter.Completed:

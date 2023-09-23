@@ -4,6 +4,7 @@ import { Button, Checkbox, Input, Table, Text, TextInput, Tooltip } from '@manti
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useAppDispatch } from '../store/store';
 import { completeTodo, editTodo, removeTodo } from '../store/actionsCreator';
+import moment from 'moment';
 
 export const ToDoListItem = ({ todo }: { todo: Todo }) => {
   const dispatch = useAppDispatch();
@@ -41,9 +42,9 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
       </Table.Td>
 
       <Table.Td>
-        <Tooltip label={`Created at: ${todo.CreatedDateTime} ${todo.CompletedDateTime !== null ? 'Completed at: ' + todo.CreatedDateTime : ''}`}
+        <Tooltip label={`Created at: ${moment(todo.CreatedDateTime).format("DD/MM/YYYY HH:mm:ss")} ${todo.CompletedDateTime !== null ? 'Completed at: ' + moment(todo.CompletedDateTime).format("DD/MM/YYYY HH:mm:ss") : ''}`}
           multiline
-          w={350} withArrow
+          w={250} withArrow
           transitionProps={{ duration: 300 }}
           position="top-start"
         >

@@ -19,12 +19,12 @@ public class CommandController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<int>> CreateToDoAsync([FromBody] CreateToDo command)
+    public async Task<ActionResult<ToDo>> CreateToDoAsync([FromBody] CreateToDo command)
     {
         try
         {
-            var id = await _toDoCommandHandler.Handle(command);
-            return Ok(id);
+            var todo = await _toDoCommandHandler.Handle(command);
+            return Ok(todo);
         }
         catch (BadRequestException e)
         {
@@ -37,12 +37,12 @@ public class CommandController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult> CompleteToDoAsync([FromBody] CompleteToDo command)
+    public async Task<ActionResult<DateTime>> CompleteToDoAsync([FromBody] CompleteToDo command)
     {
         try
         {
-            await _toDoCommandHandler.Handle(command);
-            return Ok();
+            var completedTime = await _toDoCommandHandler.Handle(command);
+            return Ok(completedTime);
         }
         catch (NotFoundException e)
         {

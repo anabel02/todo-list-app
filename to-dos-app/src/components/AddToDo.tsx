@@ -18,7 +18,7 @@ export const AddToDo = () => {
       return;
     };
 
-    dispatch(addTodo(newTodo, new Date()));
+    dispatch(addTodo(newTodo));
     setNewTodo("");
   };
 
