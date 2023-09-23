@@ -1,6 +1,5 @@
 import { Center, Flex, Select } from '@mantine/core';
 import React, { useState } from 'react';
-import SearchBar from './SearchBar';
 import { Filter } from '../store/actionsCreator';
 
 export const ToDoFilters = ({handleFilterChange} : {handleFilterChange: (value: Filter) => void}) => {
