@@ -3,14 +3,12 @@ import { OdataResponse, Todo } from "../types/type";
 import { addAction, completeAction, editAction, removeAction, setActiveTodos, setTodos } from "./actions";
 import { AppDispatch, RootState } from "./store";
 import { changeStateError, fetchError } from "../helpers/error";
-import moment from "moment";
 
 export const addTodo = (task: string) => {
     return async (dispatch: AppDispatch) => {
         try {
             const resp = await commandFetch("", { task }, HttpMethod.POST);
             const body : Todo = await resp.json();
-            console.log(body);
             if (resp.ok) {
                 dispatch(addAction(body));
             } else {
@@ -71,6 +69,12 @@ export const completeTodo = (todo: Todo) => {
     }
 };
 
+export enum Filter {
+    All = "All",
+    Completed = "Completed",
+    NotCompleted = "Not completed"
+};
+
 export const loadTodos = () => {
     return async (dispatch: AppDispatch) => {
         try {
@@ -91,12 +95,6 @@ export const loadTodos = () => {
         }
     }
 };
-
-export enum Filter {
-    All = "All",
-    Completed = "Completed",
-    NotCompleted = "Not completed"
-}
 
 export const applyFilter = (filter: Filter) => {
     return (dispatch: AppDispatch, getState: () => RootState) => {

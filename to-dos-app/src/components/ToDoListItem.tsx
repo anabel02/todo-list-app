@@ -3,7 +3,7 @@ import { Todo } from '../types/type';
 import { Button, Checkbox, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useAppDispatch } from '../store/store';
-import { applyFilter, completeTodo, editTodo,  removeTodo } from '../store/actionsHandlers';
+import { completeTodo, editTodo,  removeTodo } from '../store/actionsHandlers';
 import moment from 'moment';
 import { confirm, validate } from '../helpers/confirmation';
 
