@@ -10,8 +10,8 @@ export const AddToDo = () => {
 
   const [newTodo, setNewTodo] = useState("");
 
-  const handleAddTodo = () => {
-    dispatch(addTodo(newTodo));
+  const handleAddTodo = async () => {
+    await dispatch(addTodo(newTodo));
     setNewTodo("");
     window.location.reload();
   };

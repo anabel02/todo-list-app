@@ -12,9 +12,9 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
 
   const [checked, setChecked] = useState(false);
 
-  const handleCompleteTodo = () => {
+  const handleCompleteTodo = async () => {
     setChecked(true);
-    dispatch(completeTodo(todo));
+    await dispatch(completeTodo(todo));
     window.location.reload();
   }
 
@@ -23,8 +23,8 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
     confirm(handleCompleteTodo, () => { }, "Complete", "blue");
   }
 
-  const handleDeleteTodo = () => {
-    dispatch(removeTodo(todo));
+  const handleDeleteTodo = async () => {
+    await dispatch(removeTodo(todo));
     window.location.reload();
   }
 
@@ -35,8 +35,8 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
 
   const [editedTodo, setEditedTodo] = useState("");
 
-  const handleEditTodo = () => {
-    dispatch(editTodo({ ...todo, Task: editedTodo }));
+  const handleEditTodo = async () => {
+    await dispatch(editTodo({ ...todo, Task: editedTodo }));
     window.location.reload();
   }
 
