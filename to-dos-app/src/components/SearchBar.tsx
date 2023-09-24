@@ -1,4 +1,4 @@
-import { Input, Flex, Box, Center } from "@mantine/core";
+import { Input } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 
 function SearchBar({ SearchState }: { SearchState: [string, React.Dispatch<React.SetStateAction<string>>] }) {

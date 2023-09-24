@@ -1,4 +1,3 @@
-import { stat } from "fs";
 import { Todo, TodoAction, TodoState } from "../types/type";
 import { ActionType } from "./actions";
 
@@ -11,7 +10,7 @@ export const todoReducer = (state: TodoState = initialState, action: TodoAction)
             return {
                 ...state,
                 notCompletedTodos: [...state.notCompletedTodos, action.payload.todo!],
-                // loading: false
+                loading: false
             };
 
         case ActionType.Remove:
@@ -19,7 +18,7 @@ export const todoReducer = (state: TodoState = initialState, action: TodoAction)
                 ...state,
                 completedTodos: state.completedTodos.filter(todo => todo.Id !== action.payload.todo!.Id),
                 notCompletedTodos: state.notCompletedTodos.filter(todo => todo.Id !== action.payload.todo!.Id),
-                // loading: false
+                loading: false
             };
 
         case ActionType.Complete:
@@ -30,7 +29,7 @@ export const todoReducer = (state: TodoState = initialState, action: TodoAction)
                 ...state,
                 notCompletedTodos: state.notCompletedTodos.filter(todo => todo.Id === action.payload.todo!.Id),
                 completedTodos: [{ ...todo, completedDateTime: todo.CompletedDateTime }, ...state.completedTodos],
-                // loading: false
+                loading: false
             };
 
         case ActionType.Edit:
@@ -42,7 +41,7 @@ export const todoReducer = (state: TodoState = initialState, action: TodoAction)
                     task: action.payload.todo!.Task
                 }
                     : todo),
-                // loading: false
+                loading: false
             };
 
         case ActionType.SetTodos:

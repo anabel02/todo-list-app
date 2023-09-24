@@ -1,4 +1,4 @@
-import { Button, Modal, Text } from "@mantine/core";
+import { Button, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 
 export const errorModal = (title: string, description: string) => {

@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
-import { Box, Center, Container, Flex, Group, Stack, Text, Title } from "@mantine/core";
+import { Container, Flex, Select, Stack, Text } from "@mantine/core";
 import { AddToDo } from "./AddToDo";
 import { RootState, useAppDispatch } from "../store/store";
 import { Filter, applyFilter, loadTodos } from "../store/actionsHandlers";
 import { useSelector } from "react-redux";
-import { ToDoFilters } from "./ToDoFilters";
 import { ToDoList } from "./ToDoList";
 
 export const ToDoApp = () => {
@@ -47,19 +46,24 @@ export const ToDoApp = () => {
                         wrap="wrap"
                     >
                         <SearchBar SearchState={[searchQuery, setSearchQuery]} />
-                        <ToDoFilters handleFilterChange={handleFilterChange} />
+
+                        <Select data={["All", "Completed", "Not completed"]}
+                            defaultValue="All"
+                            onChange={handleFilterChange}
+                            checkIconPosition="right"
+                        />
                     </Flex>
-    
+
                     <AddToDo />
 
                     <Container>
-                    <Text
-                        size="xl"
-                        fw={1000}
-                        c="blue"
-                    >
-                        Total tasks: {completedTodos.length + notCompletedTodos.length}
-                    </Text>
+                        <Text
+                            size="xl"
+                            fw={1000}
+                            c="blue"
+                        >
+                            Total tasks: {completedTodos.length + notCompletedTodos.length}
+                        </Text>
                         <ToDoList todos={searchQuery !== "" ? activeTodos.filter(todo => todo.Task.includes(searchQuery)) : activeTodos} />
                     </Container>
                 </Stack>

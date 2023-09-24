@@ -2,7 +2,7 @@ import { HttpMethod, commandFetch, getSortedCompletedTodos, getSortedNotComplete
 import { OdataResponse, Todo } from "../types/type";
 import { addAction, completeAction, editAction, removeAction, setActiveTodos, setTodos } from "./actions";
 import { AppDispatch, RootState } from "./store";
-import { changeStateError, errorModal, fetchError } from "../helpers/error";
+import { changeStateError, fetchError } from "../helpers/error";
 
 export const addTodo = (task: string) => {
     return async (dispatch: AppDispatch) => {
@@ -97,7 +97,6 @@ export enum Filter {
 }
 
 export const applyFilter = (filter: Filter) => {
-    console.log("hola");
     return (dispatch: AppDispatch, getState: () => RootState) => {
         switch (filter) {
             case Filter.All:

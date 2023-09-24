@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Todo } from '../types/type';
 import { Button, Checkbox, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
@@ -52,7 +52,7 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
   const handleConfirmEdit = (e: any) => {
     e.preventDefault();
     if (validate(editedTodo)) {
-      confirm(handleEditTodo, handleCancelEdit, "Edit", "blue")
+      confirm(handleEditTodo, handleCancelEdit, "Edit", "blue");
     }
   }
 
