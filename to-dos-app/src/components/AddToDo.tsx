@@ -13,7 +13,6 @@ export const AddToDo = () => {
   const handleAddTodo = async () => {
     await dispatch(addTodo(newTodo));
     setNewTodo("");
-    window.location.reload();
   };
 
   const handleCancelAdd = () => {

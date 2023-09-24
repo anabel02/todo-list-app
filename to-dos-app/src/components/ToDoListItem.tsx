@@ -3,19 +3,18 @@ import { Todo } from '../types/type';
 import { Button, Checkbox, Table, Text, TextInput, Tooltip } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useAppDispatch } from '../store/store';
-import { completeTodo, editTodo, removeTodo } from '../store/actionsHandlers';
+import { applyFilter, completeTodo, editTodo,  removeTodo } from '../store/actionsHandlers';
 import moment from 'moment';
 import { confirm, validate } from '../helpers/confirmation';
 
 export const ToDoListItem = ({ todo }: { todo: Todo }) => {
   const dispatch = useAppDispatch();
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(todo.CompletedDateTime !== null);
 
   const handleCompleteTodo = async () => {
-    setChecked(true);
     await dispatch(completeTodo(todo));
-    window.location.reload();
+    setChecked(true);
   }
 
   const handleConfirmComplete = (e: any) => {
@@ -25,7 +24,6 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
 
   const handleDeleteTodo = async () => {
     await dispatch(removeTodo(todo));
-    window.location.reload();
   }
 
   const handleConfirmDelete = (e: any) => {
@@ -34,10 +32,12 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
   }
 
   const [editedTodo, setEditedTodo] = useState("");
+  const [name, setName] = useState(todo.Task);
 
   const handleEditTodo = async () => {
     await dispatch(editTodo({ ...todo, Task: editedTodo }));
-    window.location.reload();
+    setEditedTodo("");
+    setName(editedTodo);
   }
 
   const handleEditInputChange = (event: any) => {
@@ -61,19 +61,19 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
 
       <Table.Td>
         {
-          (todo.CompletedDateTime !== null && <Checkbox disabled checked={todo.CompletedDateTime !== null} />)
-          || <Checkbox checked={checked} onChange={handleConfirmComplete} />
+          (checked && <Checkbox disabled checked={checked} />)
+          || <Checkbox onChange={handleConfirmComplete} />
         }
       </Table.Td>
 
       <Table.Td>
-        <Tooltip label={`Created at: ${moment(todo.CreatedDateTime).format("DD/MM/YYYY HH:mm:ss")} ${todo.CompletedDateTime !== null ? 'Completed at: ' + moment(todo.CompletedDateTime).format("DD/MM/YYYY HH:mm:ss") : ''}`}
+        <Tooltip label={`Created at: ${moment(todo.CreatedDateTime).format("DD/MM/YYYY HH:mm:ss")} ${checked ? 'Completed at: ' + moment(todo.CompletedDateTime).format("DD/MM/YYYY HH:mm:ss") : ''}`}
           multiline
           w={250} withArrow
           transitionProps={{ duration: 300 }}
           position="top-start"
         >
-          <Text size='md' mt='sm'> {todo.Task} </Text>
+          <Text size='md' mt='sm'> {name} </Text>
         </Tooltip>
       </Table.Td>
 
@@ -90,7 +90,7 @@ export const ToDoListItem = ({ todo }: { todo: Todo }) => {
             transitionProps={{ duration: 300 }}
             position="top-start">
             <TextInput
-              disabled={todo.CompletedDateTime !== null}
+              disabled={checked}
               rightSection={<IconPencil size={14} />}
               placeholder="Edit task"
               radius="xl"

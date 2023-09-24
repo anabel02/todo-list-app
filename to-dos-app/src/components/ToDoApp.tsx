@@ -21,16 +21,16 @@ export const ToDoApp = () => {
 
     const [filter, setFilter] = useState(Filter.All);
 
+    const [searchQuery, setSearchQuery] = useState("");
+
     useEffect(() => {
         if (!loading)
             dispatch(applyFilter(filter));
-    }, [filter]);
+    }, [filter, completedTodos, notCompletedTodos, searchQuery]);
 
     const handleFilterChange = (value: Filter) => {
         setFilter(value);
     };
-
-    const [searchQuery, setSearchQuery] = useState("");
 
     return (
         <>

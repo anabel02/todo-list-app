@@ -3,12 +3,14 @@ import { OdataResponse, Todo } from "../types/type";
 import { addAction, completeAction, editAction, removeAction, setActiveTodos, setTodos } from "./actions";
 import { AppDispatch, RootState } from "./store";
 import { changeStateError, fetchError } from "../helpers/error";
+import moment from "moment";
 
 export const addTodo = (task: string) => {
     return async (dispatch: AppDispatch) => {
         try {
             const resp = await commandFetch("", { task }, HttpMethod.POST);
-            const body = await resp.json();
+            const body : Todo = await resp.json();
+            console.log(body);
             if (resp.ok) {
                 dispatch(addAction(body));
             } else {
@@ -57,14 +59,14 @@ export const completeTodo = (todo: Todo) => {
         try {
             const { Id } = todo;
             const resp = await commandFetch("", { Id }, HttpMethod.PUT);
-            const body = await resp.json();
+            const body : string = await resp.json();
             if (resp.ok) {
-                dispatch(completeAction({ ...todo, CreatedDateTime: body }))
+                dispatch(completeAction({ ...todo, CompletedDateTime: body }))
             } else {
-                changeStateError();  
+                
             }
         } catch {
-            fetchError();
+            
         }
     }
 };

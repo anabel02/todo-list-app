@@ -27,8 +27,8 @@ export const todoReducer = (state: TodoState = initialState, action: TodoAction)
             if (todo === undefined) return state;
             return {
                 ...state,
-                notCompletedTodos: state.notCompletedTodos.filter(todo => todo.Id === action.payload.todo!.Id),
-                completedTodos: [{ ...todo, completedDateTime: todo.CompletedDateTime }, ...state.completedTodos],
+                notCompletedTodos: state.notCompletedTodos.filter(todo => todo.Id !== action.payload.todo!.Id),
+                completedTodos: [ action.payload.todo!, ...state.completedTodos],
                 loading: false
             };
 
