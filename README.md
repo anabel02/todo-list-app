@@ -14,7 +14,7 @@ Del backend:
 dotnet restore
 ```
 
-Para configurar la conexión con la base de datos debe ir al archivo ``.\ToDosApi\appsettings.json`` y en el campo ``DefaultConnection`` de ``ConnectionStrings`` colocar su conexión. <br />
+Para configurar la conexión con la base de datos debe ir al archivo ``./ToDosApi/appsettings.json`` y en el campo ``DefaultConnection`` de ``ConnectionStrings`` colocar su conexión. <br />
 
 Para actualizar la base de datos al estado actual de las migraciones debe ejecutar el siguiente comando:
 ```
@@ -22,5 +22,6 @@ dotnet ef database update --project ToDosApi
 ```
 Luego ejecutar el siguiente comando para levantar el backend:
 ```dotnet run --project ToDosApi```
+Especificar en el ``.env`` de ``./to-dos-app`` el puerto en que corre el backend
 y por último este para levantar el fronted:
 ```yarn --cwd to-dos-app start```

@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:5028";
+const baseUrl = process.env.REACT_APP_API_URL;
 
 export enum HttpMethod {
   POST = "POST",
