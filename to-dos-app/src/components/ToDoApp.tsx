@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
-import { Center, Container, Text } from "@mantine/core";
+import { Box, Center, Container, Flex, Group, Stack, Text, Title } from "@mantine/core";
 import { AddToDo } from "./AddToDo";
 import { RootState, useAppDispatch } from "../store/store";
 import { Filter, applyFilter, loadTodos } from "../store/actionsHandlers";
@@ -37,17 +37,32 @@ export const ToDoApp = () => {
         <>
             {
                 !loading &&
-                <>
-                    <Text>Total to dos: {completedTodos.length + notCompletedTodos.length}</Text>
-                    <SearchBar SearchState={[searchQuery, setSearchQuery]} />
-                    <ToDoFilters handleFilterChange={handleFilterChange} />
-                    <Center maw={1700} h={700}>
-                        <Container>
-                            <ToDoList todos={searchQuery !== "" ? activeTodos.filter(todo => todo.Task.includes(searchQuery)) : activeTodos} />
-                            <AddToDo />
-                        </Container>
-                    </Center>
-                </>
+                <Stack>
+                    <Flex
+                        mih={250}
+                        gap="md"
+                        justify="center"
+                        align="center"
+                        direction="row"
+                        wrap="wrap"
+                    >
+                        <SearchBar SearchState={[searchQuery, setSearchQuery]} />
+                        <ToDoFilters handleFilterChange={handleFilterChange} />
+                    </Flex>
+    
+                    <AddToDo />
+
+                    <Container>
+                    <Text
+                        size="xl"
+                        fw={1000}
+                        c="blue"
+                    >
+                        Total tasks: {completedTodos.length + notCompletedTodos.length}
+                    </Text>
+                        <ToDoList todos={searchQuery !== "" ? activeTodos.filter(todo => todo.Task.includes(searchQuery)) : activeTodos} />
+                    </Container>
+                </Stack>
             }
         </>
     );

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAppDispatch } from '../store/store';
 import { addTodo } from '../store/actionsHandlers';
 import { confirm, validate } from '../helpers/confirmation';
+import { IconPlus } from '@tabler/icons-react';
 
 export const AddToDo = () => {
   const dispatch = useAppDispatch();
@@ -37,10 +38,13 @@ export const AddToDo = () => {
         <TextInput
           onChange={handleInputChange}
           value={newTodo}
+          size="md"
+          placeholder='New task'
         />
 
-        <Group justify="flex-end" mt="md">
-          <Button type='submit'>Add To Do</Button>
+        <Group  mt="md">
+          <Button type='submit'
+          rightSection={<IconPlus size={14} />}>Add</Button>
         </Group>
       </form>
     </Box>
