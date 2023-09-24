@@ -2,7 +2,7 @@ import { stat } from "fs";
 import { Todo, TodoAction, TodoState } from "../types/type";
 import { ActionType } from "./actions";
 
-const initialState: TodoState = { completedTodos: [], notCompletedTodos: [], activeTodos: [] };
+const initialState: TodoState = { completedTodos: [], notCompletedTodos: [], activeTodos: [], loading: true };
 
 export const todoReducer = (state: TodoState = initialState, action: TodoAction) => {
     switch (action.type) {
@@ -10,14 +10,16 @@ export const todoReducer = (state: TodoState = initialState, action: TodoAction)
             // when you add a new to do, it goes to the not completed todos
             return {
                 ...state,
-                notCompletedTodos: [...state.notCompletedTodos, action.payload.todo!]
+                notCompletedTodos: [...state.notCompletedTodos, action.payload.todo!],
+                // loading: false
             };
 
         case ActionType.Remove:
             return {
                 ...state,
                 completedTodos: state.completedTodos.filter(todo => todo.Id !== action.payload.todo!.Id),
-                notCompletedTodos: state.notCompletedTodos.filter(todo => todo.Id !== action.payload.todo!.Id)
+                notCompletedTodos: state.notCompletedTodos.filter(todo => todo.Id !== action.payload.todo!.Id),
+                // loading: false
             };
 
         case ActionType.Complete:
@@ -27,7 +29,8 @@ export const todoReducer = (state: TodoState = initialState, action: TodoAction)
             return {
                 ...state,
                 notCompletedTodos: state.notCompletedTodos.filter(todo => todo.Id === action.payload.todo!.Id),
-                completedTodos: [{ ...todo, completedDateTime: todo.CompletedDateTime }, ...state.completedTodos]
+                completedTodos: [{ ...todo, completedDateTime: todo.CompletedDateTime }, ...state.completedTodos],
+                // loading: false
             };
 
         case ActionType.Edit:
@@ -38,20 +41,23 @@ export const todoReducer = (state: TodoState = initialState, action: TodoAction)
                     ...todo,
                     task: action.payload.todo!.Task
                 }
-                    : todo)
+                    : todo),
+                // loading: false
             };
 
         case ActionType.SetTodos:
             return {
                 ...state,
                 notCompletedTodos: action.payload.notCompletedTodos!,
-                completedTodos: action.payload.completedTodos!
+                completedTodos: action.payload.completedTodos!,
+                loading: false
             };
 
         case ActionType.SetActiveTodos:
             return {
                 ...state,
-                activeTodos: action.payload.activeTodos!
+                activeTodos: action.payload.activeTodos!,
+                loading: false
             }
 
         default:

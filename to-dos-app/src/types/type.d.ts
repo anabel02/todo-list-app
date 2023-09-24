@@ -8,7 +8,8 @@ export type Todo = {
 export type TodoState = {
     completedTodos: Todo[],
     notCompletedTodos: Todo[],
-    activeTodos: Todo[]
+    activeTodos: Todo[],
+    loading: boolean
 };
 
 export type TodoAction = {
@@ -17,7 +18,8 @@ export type TodoAction = {
         todo?: Todo;
         completedTodos?: Todo[];
         notCompletedTodos?: Todo[];
-        activeTodos?: Todo[]
+        activeTodos?: Todo[];
+        loading: boolean
     };
 };
 

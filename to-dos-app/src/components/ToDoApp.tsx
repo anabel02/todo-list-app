@@ -18,12 +18,14 @@ export const ToDoApp = () => {
     const activeTodos = useSelector((state: RootState) => state.activeTodos);
     const completedTodos = useSelector((state: RootState) => state.completedTodos);
     const notCompletedTodos = useSelector((state: RootState) => state.notCompletedTodos);
+    const loading = useSelector((state: RootState) => state.loading);
 
     const [filter, setFilter] = useState(Filter.All);
 
     useEffect(() => {
-        dispatch(applyFilter(filter));
-    }, [dispatch, filter]);
+        if (!loading)
+            dispatch(applyFilter(filter));
+    }, [filter]);
 
     const handleFilterChange = (value: Filter) => {
         setFilter(value);
@@ -33,15 +35,20 @@ export const ToDoApp = () => {
 
     return (
         <>
-            <Text>Total to dos: {completedTodos.length + notCompletedTodos.length}</Text>
-            <SearchBar SearchState={[searchQuery, setSearchQuery]} />
-            <ToDoFilters handleFilterChange={handleFilterChange} />
-            <Center maw={1700} h={700}>
-                <Container>
-                    <ToDoList todos={searchQuery !== "" ? activeTodos.filter(todo => todo.Task.includes(searchQuery)) : activeTodos} />
-                    <AddToDo />
-                </Container>
-            </Center>
+            {
+                !loading &&
+                <>
+                    <Text>Total to dos: {completedTodos.length + notCompletedTodos.length}</Text>
+                    <SearchBar SearchState={[searchQuery, setSearchQuery]} />
+                    <ToDoFilters handleFilterChange={handleFilterChange} />
+                    <Center maw={1700} h={700}>
+                        <Container>
+                            <ToDoList todos={searchQuery !== "" ? activeTodos.filter(todo => todo.Task.includes(searchQuery)) : activeTodos} />
+                            <AddToDo />
+                        </Container>
+                    </Center>
+                </>
+            }
         </>
     );
 }

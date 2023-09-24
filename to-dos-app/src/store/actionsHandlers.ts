@@ -97,6 +97,7 @@ export enum Filter {
 }
 
 export const applyFilter = (filter: Filter) => {
+    console.log("hola");
     return (dispatch: AppDispatch, getState: () => RootState) => {
         switch (filter) {
             case Filter.All:

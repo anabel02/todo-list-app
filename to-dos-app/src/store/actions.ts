@@ -11,30 +11,30 @@ export enum ActionType {
 
 export const addAction = (todo: Todo): TodoAction => ({
     type: ActionType.Add,
-    payload: { todo }
+    payload: { todo, loading: true }
 });
 
 export const removeAction = (todo: Todo): TodoAction => ({
     type: ActionType.Remove,
-    payload: { todo }
+    payload: { todo, loading: true }
 });
 
 export const editAction = (todo: Todo): TodoAction => ({
     type: ActionType.Edit,
-    payload: { todo }
+    payload: { todo, loading: true }
 });
 
 export const completeAction = (todo: Todo): TodoAction => ({
     type: ActionType.Complete,
-    payload: { todo }
+    payload: { todo, loading: true }
 });
 
 export const setTodos = (completedTodos: Todo[], notCompletedTodos: Todo[]): TodoAction => ({
     type: ActionType.SetTodos,
-    payload: { completedTodos, notCompletedTodos },
+    payload: { completedTodos, notCompletedTodos, loading: true },
 });
 
 export const setActiveTodos = (activeTodos: Todo[]): TodoAction => ({
     type: ActionType.SetActiveTodos,
-    payload: { activeTodos },
+    payload: { activeTodos, loading: true },
 });
