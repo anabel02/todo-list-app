@@ -5,6 +5,7 @@ export const confirm = (handleConfirm: () => void, handleCancel: () => void, act
   modals.openConfirmModal({
     title: `${action} task`,
     centered: true,
+    closeOnClickOutside: false,
     children: (
       <Text size="sm">
         Are you sure you want to {action.toLowerCase()} this task?
@@ -25,8 +26,8 @@ export const validate = (value: string) => {
     title: 'Invalid Task Name',
     children: (
       <>
-        <Text>Task name mustn't be null or empty.</Text>
-        <Button fullWidth onClick={() => modals.closeAll()} mt="md">
+        <Text>Task name mustn't be empty.</Text>
+        <Button color='red' fullWidth onClick={() => modals.closeAll()} mt="md">
           Understood
         </Button>
       </>

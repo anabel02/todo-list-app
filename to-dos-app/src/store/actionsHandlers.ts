@@ -2,6 +2,7 @@ import { HttpMethod, commandFetch, getSortedCompletedTodos, getSortedNotComplete
 import { OdataResponse, Todo } from "../types/type";
 import { addAction, completeAction, editAction, removeAction, setActiveTodos, setTodos } from "./actions";
 import { AppDispatch, RootState } from "./store";
+import { changeStateError, errorModal, fetchError } from "../helpers/error";
 
 export const addTodo = (task: string) => {
     return async (dispatch: AppDispatch) => {
@@ -11,10 +12,10 @@ export const addTodo = (task: string) => {
             if (resp.ok) {
                 dispatch(addAction(body));
             } else {
-
+                changeStateError(); 
             }
         } catch {
-
+            fetchError(); 
         }
     };
 };
@@ -27,10 +28,10 @@ export const removeTodo = (todo: Todo) => {
             if (resp.ok) {
                 dispatch(removeAction(todo));
             } else {
-                // mantine error   
+                changeStateError();    
             }
         } catch {
-
+            fetchError();
         }
     }
 };
@@ -43,10 +44,10 @@ export const editTodo = (todo: Todo) => {
             if (resp.ok) {
                 dispatch(editAction(todo));
             } else {
-                // mantine error
+                changeStateError();  
             }
         } catch {
-
+            fetchError();
         }
     }
 };
@@ -60,10 +61,10 @@ export const completeTodo = (todo: Todo) => {
             if (resp.ok) {
                 dispatch(completeAction({ ...todo, CreatedDateTime: body }))
             } else {
-                // mantine error
+                changeStateError();  
             }
         } catch {
-
+            fetchError();
         }
     }
 };
@@ -81,8 +82,10 @@ export const loadTodos = () => {
                 dispatch(setTodos(bodyCompleted.value, bodyNotCompleted.value));
                 dispatch(applyFilter(Filter.All));
             } else {
+                changeStateError();
             }
         } catch {
+            fetchError();
         }
     }
 };
