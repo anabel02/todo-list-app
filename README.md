@@ -3,6 +3,12 @@
 La solución cuenta con una API implementada usando ASP.NET Core (.Net6.0) conectada a una base de datos MySQL utilizando EntityFramework Core, 
 y una aplicación web implementada con ReactJS y TypeScript.
 
+## Docker
+Ejecutar:
+```
+docker-compose up
+```
+
 ## Ejecutar la aplicación
 Ejecute los siguientes comandos en el directorio de la solución para instalar las dependencias <br />
 Del frontend: 
