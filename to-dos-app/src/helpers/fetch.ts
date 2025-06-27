@@ -17,7 +17,7 @@ export const commandFetch = (
     data: any,
     method: HttpMethod
   ): Promise<Response> => {
-    const url = `${baseUrl}/ToDos${endpoint}`;
+    const url = `${baseUrl}/ToDosCommands${endpoint}`;
     return fetch(url, {
         method,
         headers: {
