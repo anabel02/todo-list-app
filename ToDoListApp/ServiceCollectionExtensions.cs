@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.OData;
+﻿using Microsoft.AspNetCore.OData;
 using Microsoft.OData.ModelBuilder;
 using ToDoListApp.Models;
 
@@ -9,7 +8,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMediatR(this IServiceCollection services)
     {
-        return services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        return services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
     }
 
     public static IMvcBuilder AddOData(this IServiceCollection services)
