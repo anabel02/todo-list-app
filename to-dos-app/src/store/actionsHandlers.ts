@@ -24,7 +24,7 @@ export const removeTodo = (todo: Todo) => {
     return async (dispatch: AppDispatch) => {
         try {
             const { Id } = todo;
-            const resp = await commandFetch("", { Id }, HttpMethod.DELETE);
+            const resp = await commandFetch(`/${Id}`, null, HttpMethod.DELETE);
             if (resp.ok) {
                 dispatch(removeAction(todo));
             } else {
@@ -40,7 +40,7 @@ export const editTodo = (todo: Todo) => {
     return async (dispatch: AppDispatch) => {
         try {
             const { Id, Task } = todo;
-            const resp = await commandFetch("/Edit", { Id, Task }, HttpMethod.PUT);
+            const resp = await commandFetch(`/${Id}`, {Task}, HttpMethod.PUT);
             if (resp.ok) {
                 dispatch(editAction(todo));
             } else {
@@ -56,7 +56,7 @@ export const completeTodo = (todo: Todo) => {
     return async (dispatch: AppDispatch) => {
         try {
             const { Id } = todo;
-            const resp = await commandFetch("", { Id }, HttpMethod.PUT);
+            const resp = await commandFetch(`/${Id}/complete`, null, HttpMethod.PUT);
             const body : string = await resp.json();
             if (resp.ok) {
                 dispatch(completeAction({ ...todo, CompletedDateTime: body }))

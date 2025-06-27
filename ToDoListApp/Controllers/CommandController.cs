@@ -16,24 +16,26 @@ public class CommandController(ToDoService toDoService) : BaseController
         return FromResult(result);
     }
 
-    [HttpPut]
-    public async Task<ActionResult<DateTime>> CompleteToDoAsync([FromBody] CompleteToDo request)
+    [HttpPut("{id}/complete")]
+    public async Task<ActionResult<DateTime>> CompleteToDoAsync([FromRoute] int id)
     {
+        var request = new CompleteToDo(id);
         var result = await toDoService.Handle(request);
         return FromResult(result);
     }
 
-    [HttpPut]
-    [Route("Edit")]
-    public async Task<IActionResult> CompleteToDoAsync([FromBody] UpdateToDo request)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateToDoAsync([FromRoute] int id, [FromBody] UpdateToDo.UpdateToDoBody body)
     {
+        var request = new UpdateToDo(id, body);
         var result = await toDoService.Handle(request);
         return FromResult(result);
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> RemoveToDoAsync([FromBody] RemoveToDo request)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveToDoAsync([FromRoute] int id)
     {
+        var request = new RemoveToDo(id);
         var result = await toDoService.Handle(request);
         return FromResult(result);
     }

@@ -1,6 +1,6 @@
 ﻿namespace ToDoListApp.Commands;
 
-public class CompleteToDo : ICommand
+public class CompleteToDo(int id) : ICommand
 {
-    public int Id { get; set; }
+    public int Id { get; set; } = id;
 }

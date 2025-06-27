@@ -3,7 +3,6 @@ const baseUrl = process.env.REACT_APP_API_URL;
 export enum HttpMethod {
   POST = "POST",
   PUT = "PUT",
-  PATCH = "PATCH",
   DELETE = "DELETE"
 };
 
