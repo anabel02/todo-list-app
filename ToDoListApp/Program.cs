@@ -20,9 +20,8 @@ builder.Services.AddControllers().AddOData(opt =>
         .AddRouteComponents("", modelBuilder.GetEdmModel()));
 
 // Add services to the container.
-
-builder.Services.AddControllers();
 builder.Services.AddScoped<ToDoService>();
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -47,8 +46,6 @@ app.UseCors(b => b
     .AllowAnyHeader());
 
 app.UseRouting();
-
-app.UseEndpoints(endpoints => endpoints.MapControllers());
 
 app.MapControllers();
 
