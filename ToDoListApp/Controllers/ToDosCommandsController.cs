@@ -16,14 +16,14 @@ public class ToDosCommandsController(IMediator mediator) : BaseController
         return FromResult(result);
     }
 
-    [HttpPut("{id}/complete")]
+    [HttpPut("{id:int}/complete")]
     public async Task<ActionResult<DateTime>> CompleteToDoAsync([FromRoute] int id)
     {
         var result = await mediator.Send(new CompleteTaskCommand(id));
         return FromResult(result);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateToDoAsync([FromRoute] int id, [FromBody] UpdateTaskCommand.UpdateToDoBody body)
     {
         var request = new UpdateTaskCommand(id, body);
@@ -31,7 +31,7 @@ public class ToDosCommandsController(IMediator mediator) : BaseController
         return FromResult(result);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> RemoveToDoAsync([FromRoute] int id)
     {
         var result = await mediator.Send(new RemoveTaskCommand(id));

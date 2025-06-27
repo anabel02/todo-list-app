@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ToDoListApp.Commands;
+using ToDoListApp.Commands.Abstractions;
 using ToDoListApp.Commands.Result;
 using ToDoListApp.Persistence;
 
-namespace ToDoListApp.Handlers;
+namespace ToDoListApp.Commands.Handlers;
 
 public class CompleteTaskCommandHandler(ToDoContext context) : ICommandHandler<CompleteTaskCommand, DateTime>
 {

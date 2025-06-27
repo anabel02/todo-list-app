@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using ToDoListApp.Commands.Result;
 
-namespace ToDoListApp.Commands;
+namespace ToDoListApp.Commands.Abstractions;
 
 public interface ICommand<T> : IRequest<CommandResult<T>>;
 

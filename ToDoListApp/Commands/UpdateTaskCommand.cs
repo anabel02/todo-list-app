@@ -1,4 +1,6 @@
-﻿namespace ToDoListApp.Commands;
+﻿using ToDoListApp.Commands.Abstractions;
+
+namespace ToDoListApp.Commands;
 
 public class UpdateTaskCommand(int id, UpdateTaskCommand.UpdateToDoBody body) : ICommand
 {
