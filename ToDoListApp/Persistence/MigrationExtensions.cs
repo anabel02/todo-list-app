@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ToDosApi.Persistence;
+namespace ToDoListApp.Persistence;
 
 public static class MigrationExtensions
 {

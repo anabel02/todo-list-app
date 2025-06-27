@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
-using ToDosApi.Models;
-using ToDosApi.Persistence;
+using ToDoListApp.Models;
+using ToDoListApp.Persistence;
 
-namespace ToDosApi.Controllers;
+namespace ToDoListApp.Controllers;
 
 public class ToDosController : ControllerBase
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ToDosApi.Models;
+using ToDoListApp.Models;
 
-namespace ToDosApi.Persistence;
+namespace ToDoListApp.Persistence;
 
 public class ToDoContext : DbContext
 {

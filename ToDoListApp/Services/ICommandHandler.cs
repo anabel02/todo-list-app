@@ -1,6 +1,6 @@
-﻿using ToDosApi.Commands;
+﻿using ToDoListApp.Commands;
 
-namespace ToDosApi.Services;
+namespace ToDoListApp.Services;
 
 public interface ICommandHandler<in TCommand, out T> where TCommand : ICommand
 {

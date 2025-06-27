@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNet.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
-using ToDosApi.Commands;
-using ToDosApi.Exceptions;
-using ToDosApi.Models;
-using ToDosApi.Persistence;
+using ToDoListApp.Commands;
+using ToDoListApp.Exceptions;
+using ToDoListApp.Models;
+using ToDoListApp.Persistence;
 
-namespace ToDosApi.Services;
+namespace ToDoListApp.Services;
 
 public class ToDoCommandHandler : ICommandHandler<CreateToDo, Task<ToDo>>, 
                                 ICommandHandler<RemoveToDo, Task>, 

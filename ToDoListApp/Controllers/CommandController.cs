@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
-using ToDosApi.Commands;
-using ToDosApi.Exceptions;
-using ToDosApi.Models;
-using ToDosApi.Services;
+using ToDoListApp.Commands;
+using ToDoListApp.Exceptions;
+using ToDoListApp.Models;
+using ToDoListApp.Services;
 
-namespace ToDosApi.Controllers;
+namespace ToDoListApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]

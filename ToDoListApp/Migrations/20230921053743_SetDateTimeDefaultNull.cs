@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ToDosApi.Migrations
+namespace ToDoListApp.Migrations
 {
     /// <inheritdoc />
     public partial class SetDateTimeDefaultNull : Migration

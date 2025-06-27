@@ -1,4 +1,4 @@
-﻿namespace ToDosApi.Commands;
+﻿namespace ToDoListApp.Commands;
 
 public class RemoveToDo : ICommand
 {

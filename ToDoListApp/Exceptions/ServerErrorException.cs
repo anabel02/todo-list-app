@@ -1,4 +1,4 @@
-﻿namespace ToDosApi.Exceptions;
+﻿namespace ToDoListApp.Exceptions;
 
 public class ServerErrorException : Exception
 {

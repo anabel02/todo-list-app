@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ToDosApi\ToDosApi.csproj" />
+      <ProjectReference Include="..\ToDoListApp\ToDoListApp.csproj" />
     </ItemGroup>
 
 </Project>

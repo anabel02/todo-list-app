@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
-using ToDosApi.Models;
-using ToDosApi.Persistence;
-using ToDosApi.Services;
+using ToDoListApp.Models;
+using ToDoListApp.Persistence;
+using ToDoListApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
