@@ -1,5 +1,8 @@
-﻿namespace ToDoListApp.Commands;
+﻿using MediatR;
+using ToDoListApp.Commands.Result;
 
-public interface ICommand
-{
-}
+namespace ToDoListApp.Commands;
+
+public interface ICommand<T> : IRequest<CommandResult<T>>;
+
+public interface ICommand : IRequest<CommandResult>;

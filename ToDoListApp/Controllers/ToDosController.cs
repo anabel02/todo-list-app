@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using ToDoListApp.Commands;
 using ToDoListApp.Models;
 using ToDoListApp.Persistence;
-using ToDoListApp.Services;
 
 namespace ToDoListApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ToDosController(ToDoContext context, ToDoService toDoService) : BaseController
+public class ToDosController(IMediator mediator, ToDoContext context) : BaseController
 {
     [EnableQuery]
     public IQueryable<ToDo> Get() => context.ToDos;
@@ -21,35 +21,33 @@ public class ToDosController(ToDoContext context, ToDoService toDoService) : Bas
         var todo = context.ToDos.Find(key);
         return todo is not null ? Ok(todo) : NotFound();
     }
-    
+
     [HttpPost]
-    public async Task<ActionResult<ToDo>> CreateToDoAsync([FromBody] CreateToDo request)
+    public async Task<ActionResult<ToDo>> CreateToDoAsync([FromBody] CreateTaskCommand request)
     {
-        var result = await toDoService.Handle(request);
+        var result = await mediator.Send(request);
         return FromResult(result);
     }
 
     [HttpPut("{id}/complete")]
     public async Task<ActionResult<DateTime>> CompleteToDoAsync([FromRoute] int id)
     {
-        var request = new CompleteToDo(id);
-        var result = await toDoService.Handle(request);
+        var result = await mediator.Send(new CompleteTaskCommand(id));
         return FromResult(result);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateToDoAsync([FromRoute] int id, [FromBody] UpdateToDo.UpdateToDoBody body)
+    public async Task<IActionResult> UpdateToDoAsync([FromRoute] int id, [FromBody] UpdateTaskCommand.UpdateToDoBody body)
     {
-        var request = new UpdateToDo(id, body);
-        var result = await toDoService.Handle(request);
+        var request = new UpdateTaskCommand(id, body);
+        var result = await mediator.Send(request);
         return FromResult(result);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveToDoAsync([FromRoute] int id)
     {
-        var request = new RemoveToDo(id);
-        var result = await toDoService.Handle(request);
+        var result = await mediator.Send(new RemoveTaskCommand(id));
         return FromResult(result);
     }
 }

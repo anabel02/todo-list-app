@@ -1,6 +1,6 @@
 ﻿namespace ToDoListApp.Commands;
 
-public class UpdateToDo(int id, UpdateToDo.UpdateToDoBody body) : ICommand
+public class UpdateTaskCommand(int id, UpdateTaskCommand.UpdateToDoBody body) : ICommand
 {
     public record UpdateToDoBody(string? Task);
 

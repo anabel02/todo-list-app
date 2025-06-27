@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OData.ModelBuilder;
-using ToDoListApp.Models;
 using ToDoListApp.Persistence;
-using ToDoListApp.Services;
+using ToDoListApp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,15 +9,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ToDoContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-var modelBuilder = new ODataConventionModelBuilder();
+builder.Services.AddOData();
+builder.Services.AddMediatR();
 
-modelBuilder.EntitySet<ToDo>("ToDos");
-builder.Services.AddControllers().AddOData(opt =>
-    opt.Select().Count().Filter().Expand().Select().OrderBy().SetMaxTop(50)
-        .AddRouteComponents("", modelBuilder.GetEdmModel()));
-
-// Add services to the container.
-builder.Services.AddScoped<ToDoService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
