@@ -6,21 +6,15 @@ using ToDoListApp.Persistence;
 
 namespace ToDoListApp.Controllers;
 
-public class ToDosController : ControllerBase
+public class ToDosController(ToDoContext context) : ControllerBase
 {
-    private readonly ToDoContext _context;
-    public ToDosController(ToDoContext context)
-    {
-        _context = context;
-    }
-
     [EnableQuery]
-    public IQueryable<ToDo> Get() => _context.ToDos;
+    public IQueryable<ToDo> Get() => context.ToDos;
 
     [EnableQuery]
     public ActionResult<ToDo> Get([FromODataUri] int key)
     {
-        var todo = _context.ToDos.Find(key);
+        var todo = context.ToDos.Find(key);
         return todo is not null ? Ok(todo) : NotFound();
     }
 }

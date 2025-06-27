@@ -22,7 +22,7 @@ builder.Services.AddControllers().AddOData(opt =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<ToDoCommandHandler>();
+builder.Services.AddScoped<ToDoService>();
 builder.Services.AddEndpointsApiExplorer();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
+
     app.ApplyMigrations();
 }
 

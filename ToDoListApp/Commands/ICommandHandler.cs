@@ -1,6 +1,4 @@
-﻿using ToDoListApp.Commands;
-
-namespace ToDoListApp.Services;
+﻿namespace ToDoListApp.Commands;
 
 public interface ICommandHandler<in TCommand, out T> where TCommand : ICommand
 {

@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNet.OData;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ToDoListApp.Commands;
-using ToDoListApp.Exceptions;
 using ToDoListApp.Models;
 using ToDoListApp.Services;
 
@@ -9,95 +7,34 @@ namespace ToDoListApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CommandController : ControllerBase
+public class CommandController(ToDoService toDoService) : BaseController
 {
-    private readonly ToDoCommandHandler _toDoCommandHandler;
-
-    public CommandController(ToDoCommandHandler toDoCommandHandler)
-    {
-        _toDoCommandHandler = toDoCommandHandler;
-    }
-
     [HttpPost]
-    public async Task<ActionResult<ToDo>> CreateToDoAsync([FromBody] CreateToDo command)
+    public async Task<ActionResult<ToDo>> CreateToDoAsync([FromBody] CreateToDo request)
     {
-        try
-        {
-            var todo = await _toDoCommandHandler.Handle(command);
-            return Ok(todo);
-        }
-        catch (BadRequestException e)
-        {
-            return BadRequest(e.Message);
-        }
-        catch (ServerErrorException e)
-        {
-            return StatusCode(500, e.Message);
-        }
+        var result = await toDoService.Handle(request);
+        return FromResult(result);
     }
 
     [HttpPut]
-    public async Task<ActionResult<DateTime>> CompleteToDoAsync([FromBody] CompleteToDo command)
+    public async Task<ActionResult<DateTime>> CompleteToDoAsync([FromBody] CompleteToDo request)
     {
-        try
-        {
-            var completedTime = await _toDoCommandHandler.Handle(command);
-            return Ok(completedTime);
-        }
-        catch (NotFoundException e)
-        {
-            return NotFound(e.Message);
-        }
-        catch (BadRequestException e)
-        {
-            return BadRequest(e.Message);
-        }
+        var result = await toDoService.Handle(request);
+        return FromResult(result);
     }
-    
+
     [HttpPut]
     [Route("Edit")]
-    public async Task<ActionResult> CompleteToDoAsync([FromBody] UpdateToDo command)
+    public async Task<IActionResult> CompleteToDoAsync([FromBody] UpdateToDo request)
     {
-        try
-        {
-            await _toDoCommandHandler.Handle(command);
-            return Ok();
-        }
-        catch (NotFoundException e)
-        {
-            return NotFound(e.Message);
-        }
-        catch (BadRequestException e)
-        {
-            return BadRequest(e.Message);
-        }
+        var result = await toDoService.Handle(request);
+        return FromResult(result);
     }
-    
-    [HttpPatch]
-    public async Task<ActionResult> Patch([FromRoute] int key, [FromBody] Delta<ToDo> delta)
-    {
-        try
-        {
-            await _toDoCommandHandler.Handle(key, delta);
-            return Ok();
-        }
-        catch (NotFoundException e)
-        {
-            return NotFound(e.Message);
-        }
-    }
-    
+
     [HttpDelete]
-    public async Task<ActionResult> RemoveToDoAsync([FromBody] RemoveToDo command)
+    public async Task<IActionResult> RemoveToDoAsync([FromBody] RemoveToDo request)
     {
-        try
-        {
-            await _toDoCommandHandler.Handle(command);
-            return Ok();
-        }
-        catch (NotFoundException e)
-        {
-            return NotFound(e.Message);
-        }
+        var result = await toDoService.Handle(request);
+        return FromResult(result);
     }
 }

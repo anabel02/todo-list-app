@@ -3,9 +3,7 @@ using ToDoListApp.Models;
 
 namespace ToDoListApp.Persistence;
 
-public class ToDoContext : DbContext
+public class ToDoContext(DbContextOptions<ToDoContext> options) : DbContext(options)
 {
-    public DbSet<ToDo> ToDos { get; set; } = null!;
-    
-    public ToDoContext(DbContextOptions<ToDoContext> options) : base(options) {}
+    public DbSet<ToDo> ToDos { get; set; }
 }
