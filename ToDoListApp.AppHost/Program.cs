@@ -10,7 +10,7 @@ var mysql = builder.AddMySql("mysql", password, port: 3306)
 var db = mysql.AddDatabase("database");
 
 var todoListBackend = builder
-    .AddProject<ToDoListApp>("to-do-list-backend")
+    .AddProject<ToDoListApp_Api>("to-do-list-backend")
     .WaitFor(db)
     .WithReference(db, "DefaultConnection");
 
