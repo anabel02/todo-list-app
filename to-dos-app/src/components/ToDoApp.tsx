@@ -62,7 +62,7 @@ export const ToDoApp = () => {
                             fw={1000}
                             c="blue"
                         >
-                            Total tasks: {completedTodos.length + notCompletedTodos.length}
+                            Total tasks: {completedTodos?.length ?? 0 + notCompletedTodos?.length ?? 0}
                         </Text>
                         <ToDoList todos={searchQuery !== "" ? activeTodos.filter(todo => todo.Task.includes(searchQuery)) : activeTodos} />
                     </Container>

@@ -5,7 +5,6 @@ using ToDoListApp.Application;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistence(builder.Configuration);
-builder.Services.AddOData();
 builder.Services.AddMediatR();
 
 builder.Services.AddControllers();

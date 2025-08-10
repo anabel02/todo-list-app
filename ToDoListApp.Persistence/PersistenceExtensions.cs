@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ToDoListApp.Persistence;
 
-public static class ServiceCollectionExtensions
+public static class PersistenceExtensions
 {
     public static IServiceCollection AddPersistence(
         this IServiceCollection services, IConfiguration configuration)

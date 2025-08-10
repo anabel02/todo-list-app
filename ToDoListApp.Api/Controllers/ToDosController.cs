@@ -1,22 +1,25 @@
 ﻿using MediatR;
-using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
+using ToDoListApp.Application.Abstractions;
 using ToDoListApp.Application.Commands;
+using ToDoListApp.Application.Dtos;
+using ToDoListApp.Application.Queries;
 using ToDoListApp.Domain;
 using ToDoListApp.Helpers;
-using ToDoListApp.Persistence;
 
 namespace ToDoListApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ToDosController(ToDoContext context, ISender sender) : ODataController
+public class ToDosController(ISender sender) : ControllerBase
 {
-    [EnableQuery]
-    public IQueryable<ToDo> Get() => context.ToDos;
-
-    [EnableQuery]
-    public System.Web.Http.SingleResult<ToDo> Get([FromODataUri] int key) => new(context.ToDos.Where(v => v.Id == key));
+    [HttpGet]
+    public async Task<PaginatedList<ToDoDto>> GetTodos([FromQuery] QueryParameters parameters)
+    {
+        var query = new GetTodosQuery(parameters);
+        var result = await sender.Send(query);
+        return result;
+    }
 
     [HttpPost]
     public async Task<ActionResult<ToDo>> Create([FromBody] CreateTaskCommand request)

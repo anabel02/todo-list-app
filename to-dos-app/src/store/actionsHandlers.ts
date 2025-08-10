@@ -100,7 +100,7 @@ export const applyFilter = (filter: Filter) => {
     return (dispatch: AppDispatch, getState: () => RootState) => {
         switch (filter) {
             case Filter.All:
-                dispatch(setActiveTodos(getState().notCompletedTodos.concat(getState().completedTodos)));
+                dispatch(setActiveTodos((getState().notCompletedTodos ?? []).concat(getState().completedTodos ?? [])));
                 return;
 
             case Filter.Completed:
