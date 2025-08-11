@@ -12,39 +12,82 @@ public static class QueryableExtensions
     {
         var parameter = Expression.Parameter(typeof(T), "entity");
 
-        if (string.IsNullOrWhiteSpace(filter.SearchTerm) || searchableFields.Length == 0)
-            return query;
+        Expression? combinedExpression = null;
 
-        var term = filter.SearchTerm.ToLower().Trim();
-
-        Expression? searchExpression = null;
-
-        foreach (var selector in searchableFields)
+        // --- Search term ---
+        if (!string.IsNullOrWhiteSpace(filter.SearchTerm) && searchableFields.Length > 0)
         {
-            var replacedBody = new ParameterReplacer(selector.Parameters[0], parameter).Visit(selector.Body);
+            var term = filter.SearchTerm.ToLower().Trim();
+            Expression? searchExpression = null;
 
-            var likeMethod = typeof(DbFunctionsExtensions).GetMethod(
-                nameof(DbFunctionsExtensions.Like),
-                [typeof(DbFunctions), typeof(string), typeof(string)]
-            )!;
+            foreach (var selector in searchableFields)
+            {
+                var replacedBody = new ParameterReplacer(selector.Parameters[0], parameter)
+                    .Visit(selector.Body);
 
-            var efFunctionsProperty = Expression.Property(null, typeof(EF), nameof(EF.Functions));
-            var toLowerMethod = typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!;
+                var likeMethod = typeof(DbFunctionsExtensions).GetMethod(
+                    nameof(DbFunctionsExtensions.Like),
+                    new[] { typeof(DbFunctions), typeof(string), typeof(string) }
+                )!;
+                var efFunctions = Expression.Property(null, typeof(EF), nameof(EF.Functions));
+                var toLower = typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!;
 
-            var toLowerCall = Expression.Call(replacedBody, toLowerMethod);
-            var pattern = Expression.Constant($"%{term}%");
-            var likeCall = Expression.Call(null, likeMethod, efFunctionsProperty, toLowerCall, pattern);
+                var toLowerCall = Expression.Call(replacedBody!, toLower);
+                var pattern = Expression.Constant($"%{term}%");
+                var likeCall = Expression.Call(null, likeMethod, efFunctions, toLowerCall, pattern);
 
-            searchExpression = searchExpression == null ? likeCall : Expression.OrElse(searchExpression, likeCall);
+                searchExpression = searchExpression == null
+                    ? likeCall
+                    : Expression.OrElse(searchExpression, likeCall);
+            }
+
+            combinedExpression = searchExpression;
         }
 
-        if (searchExpression == null)
-            return query;
+        // --- Field filters ---
+        foreach (var ff in filter.GetFilters())
+        {
+            var property = Expression.Property(parameter, ff.FieldName);
 
-        var lambda = Expression.Lambda<Func<T, bool>>(searchExpression, parameter);
-        return query.Where(lambda);
+            Expression comparison;
+
+            if (ff.Value == null || ff.Value == DBNull.Value)
+            {
+                // For null checks, don't use Constant with a value type
+                comparison = ff.Operator switch
+                {
+                    FilterOperator.Equal => Expression.Equal(property, Expression.Constant(null, property.Type)),
+                    FilterOperator.NotEqual => Expression.NotEqual(property, Expression.Constant(null, property.Type)),
+                    _ => throw new NotSupportedException($"Operator {ff.Operator} not supported for null values")
+                };
+            }
+            else
+            {
+                // Normal constant for non-null values
+                var constant = Expression.Constant(Convert.ChangeType(ff.Value, property.Type));
+                comparison = ff.Operator switch
+                {
+                    FilterOperator.Equal => Expression.Equal(property, constant),
+                    FilterOperator.NotEqual => Expression.NotEqual(property, constant),
+                    _ => throw new NotSupportedException($"Operator {ff.Operator} not supported")
+                };
+            }
+
+            combinedExpression = combinedExpression == null
+                ? comparison
+                : Expression.AndAlso(combinedExpression, comparison);
+        }
+
+
+        // --- Apply to query ---
+        if (combinedExpression != null)
+        {
+            var lambda = Expression.Lambda<Func<T, bool>>(combinedExpression, parameter);
+            query = query.Where(lambda);
+        }
+
+        return query;
     }
-
 
     public static IQueryable<T> ApplySorting<T>(this IQueryable<T> query, SortingParams sorting)
     {

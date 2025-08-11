@@ -79,13 +79,13 @@ export const loadTodos = () => {
     return async (dispatch: AppDispatch) => {
         try {
             const respCompleted = await getSortedCompletedTodos();
-            const bodyCompleted: OdataResponse = await respCompleted.json();
+            const bodyCompleted = await respCompleted.json();
 
             const respNotCompleted = await getSortedNotCompletedTodos();
-            const bodyNotCompleted: OdataResponse = await respNotCompleted.json();
+            const bodyNotCompleted = await respNotCompleted.json();
 
             if (respCompleted.ok && respNotCompleted.ok) {
-                dispatch(setTodos(bodyCompleted.value, bodyNotCompleted.value));
+                dispatch(setTodos(bodyCompleted.items, bodyNotCompleted.items));
                 dispatch(applyFilter(Filter.All));
             } else {
                 changeStateError();

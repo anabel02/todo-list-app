@@ -9,7 +9,7 @@ public static class PersistenceExtensions
     public static IServiceCollection AddPersistence(
         this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("ToDoListAppDb");
 
         services.AddDbContext<ToDoContext>(options =>
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));

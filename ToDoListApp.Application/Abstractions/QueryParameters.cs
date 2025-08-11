@@ -27,7 +27,7 @@ public class FilterParams
     [StringLength(100, ErrorMessage = "Search term must be 100 characters or fewer.")]
     public string SearchTerm { get; set; } = string.Empty;
 
-    public List<FieldFilter> FieldFilters { get; set; } = [];
+    public string FilterString { get; set; } = string.Empty;
 }
 
 public class FieldFilter

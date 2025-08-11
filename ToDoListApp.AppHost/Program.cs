@@ -12,7 +12,7 @@ var db = mysql.AddDatabase("database");
 var todoListBackend = builder
     .AddProject<ToDoListApp_Api>("to-do-list-backend")
     .WaitFor(db)
-    .WithReference(db, "DefaultConnection");
+    .WithReference(db, "ToDoListAppDb");
 
 var reactClient = builder
     .AddNpmApp("to-do-list-react", "../to-dos-app")

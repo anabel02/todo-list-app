@@ -1,6 +1,11 @@
 ﻿using ToDoListApp.Application.Abstractions;
-using ToDoListApp.Domain;
+using ToDoListApp.Application.Dtos;
 
 namespace ToDoListApp.Application.Commands;
 
-public record CreateTaskCommand(string Task) : ICommand<ToDo>;
+public class CreateTaskCommand(CreateTaskCommand.CreateTaskCommandBody body) : ICommand<ToDoDto>
+{
+    public record CreateTaskCommandBody(string? Task);
+
+    public string? Task { get; set; } = body.Task;
+}

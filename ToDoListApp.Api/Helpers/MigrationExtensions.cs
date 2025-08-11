@@ -3,7 +3,7 @@ using ToDoListApp.Persistence;
 
 namespace ToDoListApp.Helpers;
 
-public static class MigrationExtensions
+public static class MigrationsExtensions
 {
     public static void ApplyMigrations(this IApplicationBuilder app)
     {

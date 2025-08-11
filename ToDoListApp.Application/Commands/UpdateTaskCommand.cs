@@ -2,9 +2,9 @@
 
 namespace ToDoListApp.Application.Commands;
 
-public class UpdateTaskCommand(int id, UpdateTaskCommand.UpdateToDoBody body) : ICommand
+public class UpdateTaskCommand(int id, UpdateTaskCommand.UpdateTaskBody body) : ICommand
 {
-    public record UpdateToDoBody(string? Task);
+    public record UpdateTaskBody(string? Task);
 
     public int Id { get; set; } = id;
     public string? Task { get; set; } = body.Task;
