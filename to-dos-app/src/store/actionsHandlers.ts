@@ -85,7 +85,7 @@ export const loadTodos = () => {
             const bodyNotCompleted = await respNotCompleted.json();
 
             if (respCompleted.ok && respNotCompleted.ok) {
-                dispatch(setTodos(bodyCompleted.items, bodyNotCompleted.items));
+                dispatch(setTodos(bodyCompleted, bodyNotCompleted));
                 dispatch(applyFilter(Filter.All));
             } else {
                 changeStateError();

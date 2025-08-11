@@ -8,9 +8,9 @@ export enum HttpMethod {
 
 export const queryFetch = (endpoint: string): Promise<Response> => fetch(`${baseUrl}/ToDos${endpoint}`);
 
-export const getSortedCompletedTodos = (): Promise<Response> => queryFetch(`?Sorting.OrderBy=CompletedDateTime&Sorting.Descending=false&Filter.FilterString=CompletedDateTime%20ne%20null`);
+export const getSortedCompletedTodos = (): Promise<Response> => queryFetch(`?$filter=not(CompletedDateTime eq null)&&$orderby=(CompletedDateTime) desc`);
 
-export const getSortedNotCompletedTodos = (): Promise<Response> => queryFetch(`?Sorting.OrderBy=CompletedDateTime&Sorting.Descending=true&Filter.FilterString=CompletedDateTime%20eq%20null`);
+export const getSortedNotCompletedTodos = (): Promise<Response> => queryFetch(`?$filter=(CompletedDateTime eq null)&&$orderby=(CreatedDateTime) asc`);
 
 export const commandFetch = (
     endpoint: string,

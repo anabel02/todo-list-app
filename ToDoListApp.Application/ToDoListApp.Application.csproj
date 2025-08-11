@@ -7,12 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ToDoListApp.Persistence\ToDoListApp.Persistence.csproj" />
+        <ProjectReference Include="..\ToDoListApp.Persistence\ToDoListApp.Persistence.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MediatR" Version="12.5.0" />
-      <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+        <PackageReference Include="MediatR" Version="12.5.0"/>
+        <PackageReference Include="MediatR.Contracts" Version="2.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.3.2"/>
     </ItemGroup>
 
 </Project>
