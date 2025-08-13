@@ -2,4 +2,4 @@
 
 namespace ToDoListApp.Application.Abstractions;
 
-public interface IQueryHandler<in TQuery, TProjection> : IRequestHandler<TQuery, IQueryable<TProjection>> where TQuery : IQuery<TProjection>;
+public interface IQueryHandler<in TQuery, TResponse> : IRequestHandler<TQuery, TResponse> where TQuery : IQuery<TResponse>;

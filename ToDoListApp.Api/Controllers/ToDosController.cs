@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using ToDoListApp.Application.Abstractions;
 using ToDoListApp.Application.Commands;
 using ToDoListApp.Application.Dtos;
@@ -12,18 +11,27 @@ namespace ToDoListApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ToDosController(ISender sender) : ODataController
+public class ToDosController(ISender sender) : ControllerBase
 {
     [HttpGet]
-    public async Task<IQueryable<ToDoDto>> Get(ODataQueryOptions<ToDo> options)
+    public async Task<ActionResult<IEnumerable<ToDoDto>>> Get(ODataQueryOptions<ToDo> options)
     {
         var request = new ODataQuery<ToDo, ToDoDto>(options);
         var result = await sender.Send(request);
-        return result;
+        return Ok(result);
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ToDoDto>> GetById([FromRoute] int id, ODataQueryOptions<ToDo> options)
+    {
+        var request = new SingleODataQuery<ToDo, ToDoDto>(options)
+            .WithFilter(x => x.Id == id);
+        var result = await sender.Send(request);
+        return result is null ? NotFound() : Ok(result);
     }
 
     [HttpPost]
-    public async Task<ActionResult<ToDoDto>> Create([FromBody] CreateTaskCommand.CreateTaskCommandBody body)
+    public async Task<ActionResult<ToDoDto>> Create([FromBody] CreateTaskCommandBody body)
     {
         var request = new CreateTaskCommand(body);
         var result = await sender.Send(request);
@@ -39,7 +47,7 @@ public class ToDosController(ISender sender) : ODataController
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateTaskCommand.UpdateTaskBody body)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateTaskBody body)
     {
         var request = new UpdateTaskCommand(id, body);
         var result = await sender.Send(request);

@@ -26,7 +26,7 @@ public class ODataQueryOptionsOperationFilter : IOperationFilter
         {
             Name = "$orderby",
             In = ParameterLocation.Query,
-            Description = "Order results",
+            Description = "Order results by one or more fields. Use commas to separate multiple fields.",
             Required = false,
             Schema = new OpenApiSchema { Type = "string" }
         });

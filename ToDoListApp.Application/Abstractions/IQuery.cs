@@ -2,4 +2,4 @@
 
 namespace ToDoListApp.Application.Abstractions;
 
-public interface IQuery<out TProjection> : IRequest<IQueryable<TProjection>>;
+public interface IQuery<out TProjection> : IRequest<TProjection>;

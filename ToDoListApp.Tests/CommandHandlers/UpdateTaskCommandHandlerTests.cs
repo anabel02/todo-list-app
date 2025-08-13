@@ -21,7 +21,7 @@ public class UpdateTaskCommandHandlerTests
         context.SeedTodos(existingTask);
 
         var handler = new UpdateTaskCommandHandler(context);
-        var body = new UpdateTaskCommand.UpdateTaskBody("Updated Task");
+        var body = new UpdateTaskBody("Updated Task");
         var command = new UpdateTaskCommand(existingTask.Id, body);
 
         // Act
@@ -40,7 +40,7 @@ public class UpdateTaskCommandHandlerTests
         await using var context = TestHelpers.CreateInMemoryContext();
 
         var handler = new UpdateTaskCommandHandler(context);
-        var body = new UpdateTaskCommand.UpdateTaskBody("Some Task");
+        var body = new UpdateTaskBody("Some Task");
         var command = new UpdateTaskCommand(999, body);
 
         // Act
@@ -64,9 +64,9 @@ public class UpdateTaskCommandHandlerTests
             CompletedDateTime = DateTime.Now
         };
         context.SeedTodos(completedTask);
-        
+
         var handler = new UpdateTaskCommandHandler(context);
-        var body = new UpdateTaskCommand.UpdateTaskBody("Updated Task");
+        var body = new UpdateTaskBody("Updated Task");
         var command = new UpdateTaskCommand(completedTask.Id, body);
 
         // Act
@@ -95,7 +95,7 @@ public class UpdateTaskCommandHandlerTests
         context.SeedTodos(existingTask);
 
         var handler = new UpdateTaskCommandHandler(context);
-        var body = new UpdateTaskCommand.UpdateTaskBody(invalidTask);
+        var body = new UpdateTaskBody(invalidTask);
         var command = new UpdateTaskCommand(existingTask.Id, body);
 
         // Act

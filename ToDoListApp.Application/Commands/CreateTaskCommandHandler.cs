@@ -10,12 +10,12 @@ public class CreateTaskHandler(ToDoContext context) : ICommandHandler<CreateTask
 {
     public async Task<CommandResult<ToDoDto>> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.Task))
+        if (string.IsNullOrWhiteSpace(request.Body.Task))
             return CommandResult<ToDoDto>.Fail(HttpStatusCode.BadRequest, "Task mustn't be null or empty");
 
         var toDo = new ToDo
         {
-            Task = request.Task,
+            Task = request.Body.Task,
             CreatedDateTime = DateTime.Now
         };
 

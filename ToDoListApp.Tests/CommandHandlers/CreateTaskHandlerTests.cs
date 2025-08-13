@@ -12,7 +12,7 @@ public class CreateTaskHandlerTests
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
         var handler = new CreateTaskHandler(context);
-        var commandBody = new CreateTaskCommand.CreateTaskCommandBody("New Task");
+        var commandBody = new CreateTaskCommandBody("New Task");
         var command = new CreateTaskCommand(commandBody);
 
         // Act
@@ -38,7 +38,7 @@ public class CreateTaskHandlerTests
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
         var handler = new CreateTaskHandler(context);
-        var commandBody = new CreateTaskCommand.CreateTaskCommandBody(invalidTask);
+        var commandBody = new CreateTaskCommandBody(invalidTask);
         var command = new CreateTaskCommand(commandBody);
 
         // Act

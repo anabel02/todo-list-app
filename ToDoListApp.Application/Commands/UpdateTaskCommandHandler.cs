@@ -17,10 +17,10 @@ public class UpdateTaskCommandHandler(ToDoContext context) : ICommandHandler<Upd
         if (toDo.CompletedDateTime is not null)
             return CommandResult.Fail(HttpStatusCode.BadRequest, "You can't update a completed task");
 
-        if (string.IsNullOrWhiteSpace(request.Task))
+        if (string.IsNullOrWhiteSpace(request.Body.Task))
             return CommandResult.Fail(HttpStatusCode.BadRequest, "Task mustn't be null or empty");
 
-        toDo.Task = request.Task;
+        toDo.Task = request.Body.Task;
         context.Update(toDo);
         await context.SaveChangesAsync(cancellationToken);
 

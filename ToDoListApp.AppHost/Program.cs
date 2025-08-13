@@ -2,10 +2,9 @@ using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var password = builder.AddParameter("password", "root", secret: true);
+var password = builder.AddParameter("password", secret: true);
 
-var mysql = builder.AddMySql("mysql", password, port: 3306)
-    .WithLifetime(ContainerLifetime.Persistent);
+var mysql = builder.AddMySql("mysql", password).WithLifetime(ContainerLifetime.Persistent);
 
 var db = mysql.AddDatabase("database");
 
