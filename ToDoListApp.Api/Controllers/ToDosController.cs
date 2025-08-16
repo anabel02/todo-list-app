@@ -1,14 +1,16 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using ToDoListApp.Application.Abstractions;
 using ToDoListApp.Application.Commands;
 using ToDoListApp.Application.Dtos;
 using ToDoListApp.Domain;
-using ToDoListApp.Helpers;
+using ToDoListApp.Extensions;
 
 namespace ToDoListApp.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ToDosController(ISender sender) : ControllerBase

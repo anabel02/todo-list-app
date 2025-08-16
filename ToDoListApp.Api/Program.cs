@@ -1,29 +1,24 @@
-using Microsoft.OpenApi.Models;
 using ToDoListApp.Application;
-using ToDoListApp.Helpers;
 using ToDoListApp.Persistence;
+using ToDoListApp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var isTesting = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Testing";
-
-if (!isTesting)
+if (builder.Environment.EnvironmentName != "Testing")
 {
     builder.Services.AddPersistence(builder.Configuration);
 }
+
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddMediatR();
 
 builder.Services.AddOdataControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDo API", Version = "v1" });
-    // Add OData query options to Swagger for GETs
-    c.OperationFilter<ODataQueryOptionsOperationFilter>();
-});
+builder.Services.AddSwagger();
 
 builder.Services.AddCors();
 
@@ -38,15 +33,19 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
 }
 
+app.UseRouting();
+
 app.UseCors(b => b
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-app.UseRouting();
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
 
-public partial class Program;
+public abstract partial class Program;

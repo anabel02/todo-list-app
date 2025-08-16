@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ToDoListApp.Api\ToDoListApp.Api.csproj" />
+      <ProjectReference Include="..\ToDoListApp.AuthService\ToDoListApp.AuthService.csproj" />
     </ItemGroup>
 
 </Project>

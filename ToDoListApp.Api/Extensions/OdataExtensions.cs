@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.OData;
 
-namespace ToDoListApp.Helpers;
+namespace ToDoListApp.Extensions;
 
 public static class OdataExtensions
 {

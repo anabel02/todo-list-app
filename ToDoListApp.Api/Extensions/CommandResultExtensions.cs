@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoListApp.Application.Abstractions;
 
-namespace ToDoListApp.Helpers;
+namespace ToDoListApp.Extensions;
 
 public static class CommandResultExtensions
 {

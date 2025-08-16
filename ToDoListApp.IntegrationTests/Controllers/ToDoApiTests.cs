@@ -13,7 +13,12 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     public ToDoApiTests(InMemoryToDoWebApplicationFactory factory)
     {
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing");
+
         _client = factory.CreateClient();
+
+        var token = TestJwtHelper.GenerateJwt();
+        _client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
     }
 
     [Fact]

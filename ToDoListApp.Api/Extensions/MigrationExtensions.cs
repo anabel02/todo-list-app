@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoListApp.Persistence;
 
-namespace ToDoListApp.Helpers;
+namespace ToDoListApp.Extensions;
 
 public static class MigrationsExtensions
 {
