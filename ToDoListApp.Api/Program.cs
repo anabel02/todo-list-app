@@ -5,7 +5,13 @@ using ToDoListApp.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddPersistence(builder.Configuration);
+var isTesting = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Testing";
+
+if (!isTesting)
+{
+    builder.Services.AddPersistence(builder.Configuration);
+}
+
 builder.Services.AddMediatR();
 
 builder.Services.AddOdataControllers();
@@ -42,3 +48,5 @@ app.UseRouting();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program;

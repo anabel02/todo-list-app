@@ -9,7 +9,7 @@ public class CompleteTaskCommandHandler(ToDoContext context) : ICommandHandler<C
 {
     public async Task<CommandResult<DateTime>> Handle(CompleteTaskCommand request, CancellationToken cancellationToken)
     {
-        var completedTime = DateTime.Now;
+        var completedTime = DateTime.UtcNow;
 
         var toDo = await context.ToDos.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (toDo is null)
