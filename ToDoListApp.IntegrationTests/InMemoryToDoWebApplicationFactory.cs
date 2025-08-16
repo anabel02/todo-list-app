@@ -12,6 +12,11 @@ public class InMemoryToDoWebApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.ConfigureAppConfiguration((context, _) =>
+        {
+            context.HostingEnvironment.EnvironmentName = "Testing";
+        });
+        
         builder.ConfigureServices(services =>
         {
             // Remove the DbContext configured for MySQL
