@@ -4,12 +4,12 @@ namespace ToDoListApp.Application.Dtos;
 
 public class ToDoDto
 {
-    [JsonPropertyName("Id")] public int Id { get; init; }
+    [JsonPropertyName("id")] public int Id { get; init; }
 
-    [JsonPropertyName("Task")] public string Task { get; init; } = null!;
+    [JsonPropertyName("task")] public string Task { get; init; } = null!;
 
-    [JsonPropertyName("CreatedDateTime")] public DateTime? CreatedDateTime { get; init; }
+    [JsonPropertyName("createdDateTime")] public DateTime? CreatedDateTime { get; init; }
 
-    [JsonPropertyName("CompletedDateTime")]
+    [JsonPropertyName("completedDateTime")]
     public DateTime? CompletedDateTime { get; init; }
 }

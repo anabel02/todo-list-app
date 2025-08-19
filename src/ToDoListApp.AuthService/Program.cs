@@ -31,6 +31,11 @@ if (app.Environment.IsDevelopment())
 
 await app.SeedRolesAsync();
 
+app.UseCors(b => b
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
 app.UseHttpsRedirection();
 
 app.MapControllers();
