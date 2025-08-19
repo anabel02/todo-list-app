@@ -56,7 +56,7 @@ export class TodosListComponent implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
-    this.todoService.getTodos().subscribe({
+    this.todoService.getAll().subscribe({
       next: (data) => {
         this.todos.set(data);
         this.loading.set(false);
@@ -96,18 +96,6 @@ export class TodosListComponent implements OnInit {
         },
       });
     }
-  }
-
-  updateTitle(todo: Todo) {
-    if (todo.completedDateTime) return;
-    this.todoService.updateTodo(todo.id, { task: todo.task }).subscribe();
-  }
-
-  deleteTodo(todo: Todo) {
-    this.todoService.deleteTodo(todo.id).subscribe({
-      next: () =>
-        this.todos.update((list) => list.filter((t) => t.id !== todo.id)),
-    });
   }
 
   logout() {
