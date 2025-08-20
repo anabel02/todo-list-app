@@ -3,4 +3,4 @@ using ToDoListApp.Application.Dtos;
 
 namespace ToDoListApp.Application.Commands;
 
-public record CompleteTaskCommand(int Id) : ICommand<ToDoDto>;
+public record CreateProfileCommand : ICommand<ProfileDto>;

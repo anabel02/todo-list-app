@@ -1,7 +1,6 @@
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using ToDoListApp.Application.Commands;
-using ToDoListApp.Domain;
 
 namespace ToDoListApp.Tests.CommandHandlers;
 
@@ -12,15 +11,8 @@ public class CompleteTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var task = new ToDo
-        {
-            Id = 1,
-            Task = "Test Task",
-            CompletedDateTime = null
-        };
-        context.SeedTodos(task);
-
-        var handler = new CompleteTaskCommandHandler(context);
+        var (_, currentUser, task) = TestHelpers.CreateUserWithTodos(context, "test-user", "Task 1");
+        var handler = new CompleteTaskCommandHandler(context, currentUser);
         var command = new CompleteTaskCommand(task.Id);
 
         // Act
@@ -29,9 +21,7 @@ public class CompleteTaskCommandHandlerTests
         // Assert
         Assert.True(result.Success);
         var updatedTask = await context.ToDos.FirstAsync();
-        Assert.Equal(1, updatedTask.Id);
         Assert.NotNull(updatedTask.CompletedDateTime);
-        Assert.IsType<DateTime>(result.Data);
     }
 
     [Fact]
@@ -39,7 +29,8 @@ public class CompleteTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var handler = new CompleteTaskCommandHandler(context);
+        var (_, currentUser) = TestHelpers.CreateUser(context, "test-user");
+        var handler = new CompleteTaskCommandHandler(context, currentUser);
         var command = new CompleteTaskCommand(999);
 
         // Act
@@ -48,6 +39,6 @@ public class CompleteTaskCommandHandlerTests
         // Assert
         Assert.False(result.Success);
         Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
-        Assert.Contains("doesn't exist", result.ErrorMessage);
+        Assert.Contains("not found", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
     }
 }

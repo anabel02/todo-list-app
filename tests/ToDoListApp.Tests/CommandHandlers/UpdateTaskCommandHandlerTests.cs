@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using Microsoft.EntityFrameworkCore;
 using ToDoListApp.Application.Commands;
-using ToDoListApp.Domain;
 
 namespace ToDoListApp.Tests.CommandHandlers;
 
@@ -12,15 +11,8 @@ public class UpdateTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var existingTask = new ToDo
-        {
-            Id = 1,
-            Task = "Original Task",
-            CompletedDateTime = null
-        };
-        context.SeedTodos(existingTask);
-
-        var handler = new UpdateTaskCommandHandler(context);
+        var (_, currentUser, existingTask) = TestHelpers.CreateUserWithTodos(context, "test-user", "Original Task");
+        var handler = new UpdateTaskCommandHandler(context, currentUser);
         var body = new UpdateTaskBody("Updated Task");
         var command = new UpdateTaskCommand(existingTask.Id, body);
 
@@ -38,8 +30,8 @@ public class UpdateTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-
-        var handler = new UpdateTaskCommandHandler(context);
+        var (_, currentUser) = TestHelpers.CreateUser(context, "test-user");
+        var handler = new UpdateTaskCommandHandler(context, currentUser);
         var body = new UpdateTaskBody("Some Task");
         var command = new UpdateTaskCommand(999, body);
 
@@ -57,15 +49,9 @@ public class UpdateTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var completedTask = new ToDo
-        {
-            Id = 1,
-            Task = "Completed Task",
-            CompletedDateTime = DateTime.Now
-        };
-        context.SeedTodos(completedTask);
+        var (_, currentUser, completedTask) = TestHelpers.CreateUserWithTodos(context, "test-user", "Completed Task",true);
 
-        var handler = new UpdateTaskCommandHandler(context);
+        var handler = new UpdateTaskCommandHandler(context, currentUser);
         var body = new UpdateTaskBody("Updated Task");
         var command = new UpdateTaskCommand(completedTask.Id, body);
 
@@ -86,15 +72,8 @@ public class UpdateTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var existingTask = new ToDo
-        {
-            Id = 1,
-            Task = "Original Task",
-            CompletedDateTime = null
-        };
-        context.SeedTodos(existingTask);
-
-        var handler = new UpdateTaskCommandHandler(context);
+        var (_, currentUser, existingTask) = TestHelpers.CreateUserWithTodos(context, "test-user", "Original Task");
+        var handler = new UpdateTaskCommandHandler(context, currentUser);
         var body = new UpdateTaskBody(invalidTask);
         var command = new UpdateTaskCommand(existingTask.Id, body);
 

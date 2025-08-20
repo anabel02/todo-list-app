@@ -24,6 +24,7 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     [Fact]
     public async Task GetTodos_ReturnsOkAndEmptyListInitially()
     {
+        await _client.PostAsJsonAsync("Profiles", new {});
         var response = await _client.GetAsync("ToDos");
         response.EnsureSuccessStatusCode();
 
@@ -35,8 +36,8 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     [Fact]
     public async Task CreateTodo_ReturnsCreatedTodo()
     {
+        await _client.PostAsJsonAsync("Profiles", new {});
         var body = new CreateTaskCommandBody("Test Task");
-
         var response = await _client.PostAsJsonAsync("ToDos", body);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -49,6 +50,7 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     [Fact]
     public async Task GetById_ReturnsTodo()
     {
+        await _client.PostAsJsonAsync("Profiles", new {});
         var body = new CreateTaskCommandBody("GetById test");
         var createResp = await _client.PostAsJsonAsync("ToDos", body);
         var created = await createResp.Content.ReadFromJsonAsync<ToDoDto>();
@@ -64,15 +66,16 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     [Fact]
     public async Task UpdateTodo_UpdatesSuccessfully()
     {
+        await _client.PostAsJsonAsync("Profiles", new {});
         var createBody = new CreateTaskCommandBody("Update test");
         var createResp = await _client.PostAsJsonAsync("ToDos", createBody);
         var created = await createResp.Content.ReadFromJsonAsync<ToDoDto>();
 
         var updateBody = new UpdateTaskBody("Updated title");
         var updateResp = await _client.PutAsJsonAsync($"ToDos/{created!.Id}", updateBody);
-        updateResp.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        updateResp.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var updated = await _client.GetFromJsonAsync<ToDoDto>($"ToDos/{created.Id}");
+        var updated = await updateResp.Content.ReadFromJsonAsync<ToDoDto>();
         updated.Should().NotBeNull();
         updated.Task.Should().Be(updateBody.Task);
     }
@@ -80,6 +83,7 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     [Fact]
     public async Task CompleteTodo_SetsCompletedDate()
     {
+        await _client.PostAsJsonAsync("Profiles", new {});
         var createBody = new CreateTaskCommandBody("Complete test");
         var createResp = await _client.PostAsJsonAsync("ToDos", createBody);
         var created = await createResp.Content.ReadFromJsonAsync<ToDoDto>();
@@ -87,13 +91,15 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
         var response = await _client.PutAsync($"ToDos/{created!.Id}/complete", null);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var completedDate = await response.Content.ReadFromJsonAsync<DateTime>();
-        completedDate.Should().BeCloseTo(DateTime.UtcNow, precision: TimeSpan.FromSeconds(5));
+        var dto = await response.Content.ReadFromJsonAsync<ToDoDto>();
+        dto.Should().NotBeNull();
+        dto.CompletedDateTime.Should().BeCloseTo(DateTime.UtcNow, precision: TimeSpan.FromSeconds(5));
     }
 
     [Fact]
     public async Task RemoveTodo_DeletesSuccessfully()
     {
+        await _client.PostAsJsonAsync("Profiles", new {});
         var createBody = new CreateTaskCommandBody("Remove test");
         var createResp = await _client.PostAsJsonAsync("ToDos", createBody);
         var created = await createResp.Content.ReadFromJsonAsync<ToDoDto>();

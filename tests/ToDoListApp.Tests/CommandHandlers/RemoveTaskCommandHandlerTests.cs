@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using ToDoListApp.Application.Commands;
-using ToDoListApp.Domain;
 
 namespace ToDoListApp.Tests.CommandHandlers;
 
@@ -11,14 +10,8 @@ public class RemoveTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var task = new ToDo
-        {
-            Id = 1,
-            Task = "Task to remove"
-        };
-        context.SeedTodos(task);
-
-        var handler = new RemoveTaskCommandHandler(context);
+        var (_, currentUser, task) = TestHelpers.CreateUserWithTodos(context, "test-user", "Task to remove");
+        var handler = new RemoveTaskCommandHandler(context, currentUser);
         var command = new RemoveTaskCommand(task.Id);
 
         // Act
@@ -34,8 +27,8 @@ public class RemoveTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-
-        var handler = new RemoveTaskCommandHandler(context);
+        var (_, currentUser) = TestHelpers.CreateUser(context, "test-user");
+        var handler = new RemoveTaskCommandHandler(context, currentUser);
         var command = new RemoveTaskCommand(999);
 
         // Act

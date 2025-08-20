@@ -1,6 +1,8 @@
 using ToDoListApp.Application;
+using ToDoListApp.Application.Abstractions;
 using ToDoListApp.Persistence;
 using ToDoListApp.Extensions;
+using ToDoListApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,9 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
 
 builder.Services.AddMediatR();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUser, HttpCurrentUser>();
 
 builder.Services.AddOdataControllers();
 

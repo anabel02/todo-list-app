@@ -4,14 +4,15 @@ using ToDoListApp.Application.Commands;
 
 namespace ToDoListApp.Tests.CommandHandlers;
 
-public class CreateTaskHandlerTests
+public class CreateTaskCommandHandlerTests
 {
     [Fact]
     public async Task Handle_ShouldCreateTask_WhenTaskIsValid()
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var handler = new CreateTaskHandler(context);
+        var (_, currentUser) = TestHelpers.CreateUser(context, "test-user");
+        var handler = new CreateTaskCommandHandler(context, currentUser);
         var commandBody = new CreateTaskCommandBody("New Task");
         var command = new CreateTaskCommand(commandBody);
 
@@ -37,7 +38,8 @@ public class CreateTaskHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var handler = new CreateTaskHandler(context);
+        var (_, currentUser) = TestHelpers.CreateUser(context, "test-user");
+        var handler = new CreateTaskCommandHandler(context, currentUser);
         var commandBody = new CreateTaskCommandBody(invalidTask);
         var command = new CreateTaskCommand(commandBody);
 

@@ -1,24 +1,29 @@
 ﻿using System.Net;
 using Microsoft.EntityFrameworkCore;
 using ToDoListApp.Application.Abstractions;
+using ToDoListApp.Application.Dtos;
 using ToDoListApp.Persistence;
 
 namespace ToDoListApp.Application.Commands;
 
-public class CompleteTaskCommandHandler(ToDoContext context) : ICommandHandler<CompleteTaskCommand, DateTime>
+public class CompleteTaskCommandHandler(ToDoContext context, ICurrentUser? currentUser = null) : ICommandHandler<CompleteTaskCommand, ToDoDto>
 {
-    public async Task<CommandResult<DateTime>> Handle(CompleteTaskCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResult<ToDoDto>> Handle(CompleteTaskCommand request, CancellationToken cancellationToken)
     {
-        var completedTime = DateTime.UtcNow;
+        if (string.IsNullOrWhiteSpace(currentUser?.UserId))
+            return CommandResult<ToDoDto>.Fail(HttpStatusCode.Unauthorized, "User is not authorized.");
 
-        var toDo = await context.ToDos.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        var profile = await context.Profiles.SingleOrDefaultAsync(p => p.UserId == currentUser.UserId, cancellationToken);
+        if (profile is null)
+            return CommandResult<ToDoDto>.Fail(HttpStatusCode.Unauthorized, "Profile not found for this user.");
+
+        var toDo = await context.ToDos.SingleOrDefaultAsync(x => x.Id == request.Id && x.ProfileId == profile.Id, cancellationToken);
         if (toDo is null)
-            return CommandResult<DateTime>.Fail(HttpStatusCode.NotFound, $"Task with id {request.Id} doesn't exist");
+            return CommandResult<ToDoDto>.Fail(HttpStatusCode.NotFound, "Task not found for this user.");
 
-        toDo.CompletedDateTime = completedTime;
-        context.Update(toDo);
+        toDo.CompletedDateTime = DateTime.UtcNow;
         await context.SaveChangesAsync(cancellationToken);
 
-        return CommandResult<DateTime>.Ok(completedTime);
+        return CommandResult<ToDoDto>.Ok(toDo.MapTo<ToDoDto>());
     }
 }

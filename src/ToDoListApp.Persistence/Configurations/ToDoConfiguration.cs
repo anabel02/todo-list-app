@@ -23,5 +23,11 @@ public class ToDoConfiguration : IEntityTypeConfiguration<ToDo>
             .HasColumnType("datetime(6)")
             .IsRequired(false)
             .HasDefaultValue(null);
+
+        builder
+            .HasOne(t => t.Profile)
+            .WithMany(p => p.ToDos)
+            .HasForeignKey(t => t.ProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

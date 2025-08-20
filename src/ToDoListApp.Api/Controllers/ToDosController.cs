@@ -13,12 +13,15 @@ namespace ToDoListApp.Controllers;
 [Authorize]
 [ApiController]
 [Route("[controller]")]
-public class ToDosController(ISender sender) : ControllerBase
+public class ToDosController(ISender sender, ICurrentUser currentUser) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ToDoDto>>> Get(ODataQueryOptions<ToDo> options)
     {
         var request = new ODataQuery<ToDo, ToDoDto>(options);
+
+        request = request.WithFilter(x => x.Profile.UserId == currentUser.UserId);
+
         var result = await sender.Send(request);
         return Ok(result);
     }
@@ -28,6 +31,9 @@ public class ToDosController(ISender sender) : ControllerBase
     {
         var request = new SingleODataQuery<ToDo, ToDoDto>(options)
             .WithFilter(x => x.Id == id);
+
+        request = request.WithFilter(x => x.Profile.UserId == currentUser.UserId);
+
         var result = await sender.Send(request);
         return result is null ? NotFound() : Ok(result);
     }
@@ -41,7 +47,7 @@ public class ToDosController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:int}/complete")]
-    public async Task<ActionResult<DateTime>> Complete([FromRoute] int id)
+    public async Task<ActionResult<ToDoDto>> Complete([FromRoute] int id)
     {
         var request = new CompleteTaskCommand(id);
         var result = await sender.Send(request);
@@ -49,7 +55,7 @@ public class ToDosController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateTaskBody body)
+    public async Task<ActionResult<ToDoDto>> Update([FromRoute] int id, [FromBody] UpdateTaskBody body)
     {
         var request = new UpdateTaskCommand(id, body);
         var result = await sender.Send(request);
