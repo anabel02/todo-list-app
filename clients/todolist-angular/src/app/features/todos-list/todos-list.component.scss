@@ -1,0 +1,57 @@
+﻿.todos-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+
+  .spacer {
+    flex: 1;
+  }
+}
+
+.add-todo-form {
+  display: flex;
+  gap: 10px;
+  align-items: stretch; // stretch children to same height
+  padding: 16px;
+}
+
+.todo-input {
+  flex: 1;
+}
+
+.add-button {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-width {
+  flex: 1;
+}
+
+
+.todo-completed {
+  text-decoration: line-through;
+  color: gray;
+  flex: 1;
+}
+
+.error {
+  color: red;
+  margin: 16px;
+  padding: 8px;
+  text-align: center;
+}
+
+.empty {
+  margin: 16px;
+  text-align: center;
+}

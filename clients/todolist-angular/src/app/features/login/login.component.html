@@ -1,0 +1,45 @@
+<mat-card class="login-card">
+  <mat-toolbar color="primary" class="login-toolbar">
+    <span>Welcome Back</span>
+  </mat-toolbar>
+
+  <form (ngSubmit)="login()" class="login-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Username</mat-label>
+      <input matInput [(ngModel)]="username" name="username" required/>
+      <mat-icon matSuffix>person</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [(ngModel)]="password"
+        [type]="hide ? 'password' : 'text'"
+        required
+        name="password"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="login-btn" type="submit">
+      Login
+    </button>
+
+    @if (error) {
+      <div class="error-container">
+        <mat-error>{{ error }}</mat-error>
+      </div>
+    }
+  </form>
+</mat-card>
+

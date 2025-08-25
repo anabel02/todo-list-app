@@ -1,0 +1,56 @@
+﻿<mat-card class="todos-container">
+  <mat-toolbar color="primary" class="header">
+    <span>My Todos</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="fetch()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <form class="add-todo-form" (ngSubmit)="addTodo()">
+    <mat-form-field appearance="outline" class="todo-input">
+      <mat-label>New Todo</mat-label>
+      <input
+        matInput
+        [(ngModel)]="newTodoTitle"
+        name="newTodoTitle"
+        required
+        placeholder="Enter a task..."
+      />
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" type="submit" class="add-button" [disabled]="loading() || (newTodoTitle() | isNullOrWhitespace)">
+      <mat-icon>add</mat-icon>
+      Add
+    </button>
+  </form>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  @if (error()) {
+    <mat-card class="error">{{ error() }}</mat-card>
+  }
+
+  @if (!loading() && todos().length > 0) {
+    <mat-list>
+      @for (t of todos(); track t.id) {
+        <mat-list-item>
+          <mat-checkbox
+            [checked]="!!t.completedDateTime"
+            [disabled]="t.completedDateTime"
+            (change)="toggleCompleted(t)"
+          ></mat-checkbox>
+
+          <span [class.todo-completed]="t.completedDateTime">{{ t.task }}</span>
+        </mat-list-item>
+      }
+    </mat-list>
+  } @else if (!loading() && todos().length === 0) {
+    <mat-card class="empty">No todos yet.</mat-card>
+  }
+</mat-card>
