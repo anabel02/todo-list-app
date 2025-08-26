@@ -6,7 +6,7 @@ using ToDoListApp.Application.Abstractions;
 using ToDoListApp.Application.Commands;
 using ToDoListApp.Application.Dtos;
 using ToDoListApp.Domain;
-using ToDoListApp.Extensions;
+using ToDoListApp.Helpers;
 
 namespace ToDoListApp.Controllers;
 

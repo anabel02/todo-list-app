@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using ToDoListApp.Application.Abstractions;
 
-namespace ToDoListApp.Services;
+namespace ToDoListApp.Helpers;
 
 public class HttpCurrentUser(IHttpContextAccessor accessor) : ICurrentUser
 {

@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using ToDoListApp.Application.Commands;
 using ToDoListApp.Application.Dtos;
+using ToDoListApp.Persistence;
 
 namespace ToDoListApp.IntegrationTests.Controllers;
 
@@ -12,19 +14,22 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
 
     public ToDoApiTests(InMemoryToDoWebApplicationFactory factory)
     {
-        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing");
-
         _client = factory.CreateClient();
 
         var token = TestJwtHelper.GenerateJwt();
         _client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<ToDoContext>();
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
     }
 
     [Fact]
     public async Task GetTodos_ReturnsOkAndEmptyListInitially()
     {
-        await _client.PostAsJsonAsync("Profiles", new {});
+        await _client.PostAsJsonAsync("Profiles", new { });
         var response = await _client.GetAsync("ToDos");
         response.EnsureSuccessStatusCode();
 
@@ -34,9 +39,17 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     }
 
     [Fact]
+    public async Task CreateTodo_WithoutProfile_ReturnsForbidden()
+    {
+        var body = new CreateTaskCommandBody("No profile yet");
+        var response = await _client.PostAsJsonAsync("ToDos", body);
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+    }
+
+    [Fact]
     public async Task CreateTodo_ReturnsCreatedTodo()
     {
-        await _client.PostAsJsonAsync("Profiles", new {});
+        await _client.PostAsJsonAsync("Profiles", new { });
         var body = new CreateTaskCommandBody("Test Task");
         var response = await _client.PostAsJsonAsync("ToDos", body);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -50,7 +63,7 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     [Fact]
     public async Task GetById_ReturnsTodo()
     {
-        await _client.PostAsJsonAsync("Profiles", new {});
+        await _client.PostAsJsonAsync("Profiles", new { });
         var body = new CreateTaskCommandBody("GetById test");
         var createResp = await _client.PostAsJsonAsync("ToDos", body);
         var created = await createResp.Content.ReadFromJsonAsync<ToDoDto>();
@@ -66,7 +79,7 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     [Fact]
     public async Task UpdateTodo_UpdatesSuccessfully()
     {
-        await _client.PostAsJsonAsync("Profiles", new {});
+        await _client.PostAsJsonAsync("Profiles", new { });
         var createBody = new CreateTaskCommandBody("Update test");
         var createResp = await _client.PostAsJsonAsync("ToDos", createBody);
         var created = await createResp.Content.ReadFromJsonAsync<ToDoDto>();
@@ -83,7 +96,7 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     [Fact]
     public async Task CompleteTodo_SetsCompletedDate()
     {
-        await _client.PostAsJsonAsync("Profiles", new {});
+        await _client.PostAsJsonAsync("Profiles", new { });
         var createBody = new CreateTaskCommandBody("Complete test");
         var createResp = await _client.PostAsJsonAsync("ToDos", createBody);
         var created = await createResp.Content.ReadFromJsonAsync<ToDoDto>();
@@ -99,7 +112,7 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
     [Fact]
     public async Task RemoveTodo_DeletesSuccessfully()
     {
-        await _client.PostAsJsonAsync("Profiles", new {});
+        await _client.PostAsJsonAsync("Profiles", new { });
         var createBody = new CreateTaskCommandBody("Remove test");
         var createResp = await _client.PostAsJsonAsync("ToDos", createBody);
         var created = await createResp.Content.ReadFromJsonAsync<ToDoDto>();

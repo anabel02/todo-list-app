@@ -1,15 +1,11 @@
 using ToDoListApp.Application;
 using ToDoListApp.Application.Abstractions;
+using ToDoListApp.Helpers;
 using ToDoListApp.Persistence;
-using ToDoListApp.Extensions;
-using ToDoListApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.EnvironmentName != "Testing")
-{
-    builder.Services.AddPersistence(builder.Configuration);
-}
+builder.Services.AddPersistence(builder.Configuration);
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 

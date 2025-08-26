@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ToDoListApp.Extensions;
+namespace ToDoListApp.Helpers;
 
 public static class AuthenticationExtensions
 {

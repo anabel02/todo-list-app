@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Data.Common;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using ToDoListApp.Persistence;
 
@@ -12,16 +14,20 @@ public class InMemoryToDoWebApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration((context, _) =>
-        {
-            context.HostingEnvironment.EnvironmentName = "Testing";
-        });
-        
+        builder.ConfigureAppConfiguration((context, _) => { context.HostingEnvironment.EnvironmentName = "Testing"; });
+
         builder.ConfigureServices(services =>
         {
             // Remove the DbContext configured for MySQL
-            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ToDoContext>));
-            if (descriptor != null) services.Remove(descriptor);
+            var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IDbContextOptionsConfiguration<ToDoContext>));
+
+            if (dbContextDescriptor != null)
+                services.Remove(dbContextDescriptor);
+
+            var dbConnectionDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbConnection));
+
+            if (dbConnectionDescriptor != null)
+                services.Remove(dbConnectionDescriptor);
 
             // Add in-memory database
             services.AddDbContext<ToDoContext>(options =>
