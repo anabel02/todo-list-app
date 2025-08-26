@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using ToDoListApp.Application.Commands;
 using ToDoListApp.Application.Dtos;
+using ToDoListApp.Persistence;
 
 namespace ToDoListApp.IntegrationTests.Controllers;
 
@@ -19,6 +21,11 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
         var token = TestJwtHelper.GenerateJwt();
         _client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<ToDoContext>();
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
     }
 
     [Fact]
@@ -31,6 +38,14 @@ public class ToDoApiTests : IClassFixture<InMemoryToDoWebApplicationFactory>
         var todos = await response.Content.ReadFromJsonAsync<List<ToDoDto>>();
         todos.Should().NotBeNull();
         todos.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task CreateTodo_WithoutProfile_ReturnsForbidden()
+    {
+        var body = new CreateTaskCommandBody("No profile yet");
+        var response = await _client.PostAsJsonAsync("ToDos", body);
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
     [Fact]
