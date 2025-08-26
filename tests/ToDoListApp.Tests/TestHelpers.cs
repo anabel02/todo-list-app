@@ -54,7 +54,7 @@ public static class TestHelpers
         return (profile, currentUser);
     }
 
-    public static (Profile profile, FakeCurrentUser currentUser, ToDo todo) CreateUserWithTodos(
+    public static (Profile profile, FakeCurrentUser currentUser, ToDo todo) CreateUserWithTask(
         ToDoContext context,
         string userId = "test-user",
         string todoTitle = "New Task",

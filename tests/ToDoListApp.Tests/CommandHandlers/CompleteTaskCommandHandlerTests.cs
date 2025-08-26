@@ -11,8 +11,8 @@ public class CompleteTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var (_, currentUser, task) = TestHelpers.CreateUserWithTodos(context, "test-user", "Task 1");
-        var handler = new CompleteTaskCommandHandler(context, currentUser);
+        var (_, user, task) = TestHelpers.CreateUserWithTask(context);
+        var handler = new CompleteTaskCommandHandler(context, user);
         var command = new CompleteTaskCommand(task.Id);
 
         // Act
@@ -29,8 +29,8 @@ public class CompleteTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var (_, currentUser) = TestHelpers.CreateUser(context, "test-user");
-        var handler = new CompleteTaskCommandHandler(context, currentUser);
+        var (_, user) = TestHelpers.CreateUser(context);
+        var handler = new CompleteTaskCommandHandler(context, user);
         var command = new CompleteTaskCommand(999);
 
         // Act
@@ -40,5 +40,23 @@ public class CompleteTaskCommandHandlerTests
         Assert.False(result.Success);
         Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
         Assert.Contains("not found", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task Handle_ShouldReturnForbidden_WhenUserDoesNotOwnTask()
+    {
+        // Arrange
+        await using var context = TestHelpers.CreateInMemoryContext();
+        var (_, _, task) = TestHelpers.CreateUserWithTask(context, "owner-user", "Owner's Task");
+        var (_, otherUser) = TestHelpers.CreateUser(context, "other-user");
+        var handler = new CompleteTaskCommandHandler(context, otherUser);
+        var command = new CompleteTaskCommand(task.Id);
+
+        // Act
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Equal(HttpStatusCode.Forbidden, result.StatusCode);
     }
 }

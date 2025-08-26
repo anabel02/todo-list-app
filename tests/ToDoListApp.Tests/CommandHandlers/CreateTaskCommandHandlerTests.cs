@@ -11,8 +11,8 @@ public class CreateTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var (_, currentUser) = TestHelpers.CreateUser(context, "test-user");
-        var handler = new CreateTaskCommandHandler(context, currentUser);
+        var (_, user) = TestHelpers.CreateUser(context);
+        var handler = new CreateTaskCommandHandler(context, user);
         var commandBody = new CreateTaskCommandBody("New Task");
         var command = new CreateTaskCommand(commandBody);
 
@@ -38,8 +38,8 @@ public class CreateTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var (_, currentUser) = TestHelpers.CreateUser(context, "test-user");
-        var handler = new CreateTaskCommandHandler(context, currentUser);
+        var (_, user) = TestHelpers.CreateUser(context);
+        var handler = new CreateTaskCommandHandler(context, user);
         var commandBody = new CreateTaskCommandBody(invalidTask);
         var command = new CreateTaskCommand(commandBody);
 

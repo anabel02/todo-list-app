@@ -11,7 +11,7 @@ public class UpdateTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var (_, currentUser, existingTask) = TestHelpers.CreateUserWithTodos(context, "test-user", "Original Task");
+        var (_, currentUser, existingTask) = TestHelpers.CreateUserWithTask(context);
         var handler = new UpdateTaskCommandHandler(context, currentUser);
         var body = new UpdateTaskBody("Updated Task");
         var command = new UpdateTaskCommand(existingTask.Id, body);
@@ -30,8 +30,8 @@ public class UpdateTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var (_, currentUser) = TestHelpers.CreateUser(context, "test-user");
-        var handler = new UpdateTaskCommandHandler(context, currentUser);
+        var (_, user) = TestHelpers.CreateUser(context);
+        var handler = new UpdateTaskCommandHandler(context, user);
         var body = new UpdateTaskBody("Some Task");
         var command = new UpdateTaskCommand(999, body);
 
@@ -41,7 +41,26 @@ public class UpdateTaskCommandHandlerTests
         // Assert
         Assert.False(result.Success);
         Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
-        Assert.Contains("doesn't exist", result.ErrorMessage);
+        Assert.Contains("not found", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+    }
+    
+    [Fact]
+    public async Task Handle_ShouldReturnForbidden_WhenUserDoesNotOwnTask()
+    {
+        // Arrange
+        await using var context = TestHelpers.CreateInMemoryContext();
+        var (_, _, task) = TestHelpers.CreateUserWithTask(context, "owner-user", "Owner's Task");
+        var (_, otherUser) = TestHelpers.CreateUser(context, "other-user");
+        var handler = new UpdateTaskCommandHandler(context, otherUser);
+        var body = new UpdateTaskBody("Some Task");
+        var command = new UpdateTaskCommand(task.Id, body);
+
+        // Act
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Equal(HttpStatusCode.Forbidden, result.StatusCode);
     }
 
     [Fact]
@@ -49,9 +68,8 @@ public class UpdateTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var (_, currentUser, completedTask) = TestHelpers.CreateUserWithTodos(context, "test-user", "Completed Task",true);
-
-        var handler = new UpdateTaskCommandHandler(context, currentUser);
+        var (_, user, completedTask) = TestHelpers.CreateUserWithTask(context, completed: true);
+        var handler = new UpdateTaskCommandHandler(context, user);
         var body = new UpdateTaskBody("Updated Task");
         var command = new UpdateTaskCommand(completedTask.Id, body);
 
@@ -72,8 +90,8 @@ public class UpdateTaskCommandHandlerTests
     {
         // Arrange
         await using var context = TestHelpers.CreateInMemoryContext();
-        var (_, currentUser, existingTask) = TestHelpers.CreateUserWithTodos(context, "test-user", "Original Task");
-        var handler = new UpdateTaskCommandHandler(context, currentUser);
+        var (_, user, existingTask) = TestHelpers.CreateUserWithTask(context);
+        var handler = new UpdateTaskCommandHandler(context, user);
         var body = new UpdateTaskBody(invalidTask);
         var command = new UpdateTaskCommand(existingTask.Id, body);
 

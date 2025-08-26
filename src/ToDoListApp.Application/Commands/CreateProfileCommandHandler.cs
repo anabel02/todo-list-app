@@ -7,11 +7,11 @@ using ToDoListApp.Persistence;
 
 namespace ToDoListApp.Application.Commands;
 
-public class CreateProfileCommandHandler(ToDoContext context, ICurrentUser? currentUser = null) : ICommandHandler<CreateProfileCommand, ProfileDto>
+public class CreateProfileCommandHandler(ToDoContext context, ICurrentUser currentUser) : ICommandHandler<CreateProfileCommand, ProfileDto>
 {
     public async Task<CommandResult<ProfileDto>> Handle(CreateProfileCommand request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(currentUser?.UserId))
+        if (string.IsNullOrWhiteSpace(currentUser.UserId))
             return CommandResult<ProfileDto>.Fail(HttpStatusCode.Unauthorized, "User is not authorized.");
 
         var exists = await context.Profiles
