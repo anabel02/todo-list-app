@@ -7,12 +7,12 @@ export abstract class ODataService<T> {
 
   constructor(protected http: HttpClient) {}
 
-  getAll(queryOptions?: QueryOptions<T>): Observable<T[]> {
+  getAll(queryOptions?: Partial<QueryOptions<T>>): Observable<T[]> {
     const query = buildQuery(queryOptions);
     return this.http.get<T[]>(`${this.baseUrl}${query}`);
   }
 
-  getById(id: string | number, queryOptions?: QueryOptions<T>): Observable<T> {
+  getById(id: string | number, queryOptions?: Partial<QueryOptions<T>>): Observable<T> {
     const query = buildQuery(queryOptions);
     return this.http.get<T>(`${this.baseUrl}(${id})${query}`);
   }

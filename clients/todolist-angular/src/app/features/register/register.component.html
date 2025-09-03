@@ -1,13 +1,13 @@
-<mat-card class="login-card">
-  <mat-toolbar color="primary" class="login-toolbar">
-    <span>Welcome Back</span>
+﻿<mat-card class="register-card">
+  <mat-toolbar color="primary" class="register-toolbar">
+    <span>Create Account</span>
   </mat-toolbar>
 
-  <form (ngSubmit)="login()" class="login-form">
+  <form (ngSubmit)="register()" class="register-form">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="username" name="username" required/>
-      <mat-icon matSuffix>person</mat-icon>
+      <input matInput [(ngModel)]="username" name="username" required />
+      <mat-icon matSuffix>person_add</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
@@ -31,12 +31,24 @@
       </button>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" class="login-btn" type="submit">
-      Login
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Confirm Password</mat-label>
+      <input
+        matInput
+        [(ngModel)]="confirmPassword"
+        [type]="hide ? 'password' : 'text'"
+        required
+        name="confirmPassword"
+      />
+      <mat-icon matSuffix>check</mat-icon>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="register-btn" type="submit">
+      Register
     </button>
 
     <div class="muted-link">
-      <a routerLink="/register">Don't have an account? Register</a>
+      <a routerLink="/login">Already have an account? Login</a>
     </div>
 
     @if (error) {
@@ -46,4 +58,3 @@
     }
   </form>
 </mat-card>
-

@@ -2,6 +2,16 @@
   <mat-toolbar color="primary" class="header">
     <span>My Todos</span>
     <span class="spacer"></span>
+
+    <mat-button-toggle-group
+      [value]="filter()"
+      (change)="onFilterChange($event)"
+    >
+      <mat-button-toggle value="all">All</mat-button-toggle>
+      <mat-button-toggle value="active">Active</mat-button-toggle>
+      <mat-button-toggle value="completed">Completed</mat-button-toggle>
+    </mat-button-toggle-group>
+
     <button mat-icon-button (click)="fetch()">
       <mat-icon>refresh</mat-icon>
     </button>
